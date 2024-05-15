@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .border-bot-only {
+        border-width: 0 0 2px 0; /* top right bottom left */
+        border-color: #333; /* Border color */
+        border-style: solid; /* Solid border style */
+      }
+  }
