@@ -17,7 +17,8 @@ class DepartmentController extends Controller
                 },
                 'faculty' => function ($query) {
                     $query->where('role', 'faculty');
-                }
+                },
+                'divisions',
             ])->get(),
         ]);
     }

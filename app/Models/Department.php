@@ -18,4 +18,9 @@ class Department extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function divisions()
+    {
+        return $this->hasMany(Division::class);
+    }
 }
