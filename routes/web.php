@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\UserManagementController;
 
 Route::get('/', function () {
@@ -22,4 +23,8 @@ Route::controller(DashboardController::class)->group(function(){
 
 Route::controller(UserManagementController::class)->group(function(){
     Route::get('/users-all', 'showUser')->name('users.show');
+});
+
+Route::controller(DepartmentController::class)->group(function(){
+    Route::get('/departments', 'showDepartment')->name('departments.show');
 });
