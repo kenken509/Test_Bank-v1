@@ -142,8 +142,8 @@
                 </button>
                 Welcome back, {{ user.role }} {{ user.name }}
             </div>
-            <div class="p-8 text-blue-700 font-extrabold">
-               content ::
+            <div class="p-8  ">
+                
                 <slot></slot>
             </div>
         </div>
