@@ -12,10 +12,10 @@
 
         <form>
 
-            <div class="flex w-full flex-col w-full md:w-[50%]">
+            <div class="flex w-full flex-col w-full md:w-[50%] pt-2">
 
                 <label for="depName" class="my-2 text-lg font-semibold text-gray-600">Division Name :</label>
-                <input type="text" id="depName" placeholder="Enter division name" class="rounded border border-blue-700 my-2"/>
+                <input type="text" id="depName" placeholder="Enter division name" class="rounded rounded-lg border border-blue-700 my-2"/>
                 
                 
                 <label for="departments" class="my-2 text-lg font-semibold text-gray-600" >Department :</label>
@@ -26,7 +26,7 @@
                     </option>
                 </select>
                 
-                <button type="submit" class="bg-blue-700 hover:bg-blue-600 my-2 py-2 rounded text-gray-200">Submit</button>
+                <button type="submit" class="btn-primary ">Add</button>
             </div>
         </form>
     </DashboardLayout>

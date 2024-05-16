@@ -16,4 +16,8 @@
       .btn-success{
         @apply  text-gray-50 border border-gray-600 rounded p-2 bg-green-500 hover:bg-green-700 shadow-md 
       }
+      
+      .btn-primary{
+        @apply bg-blue-700 hover:bg-blue-600 hover:text-white my-2 py-2 rounded text-gray-100 rounded-lg
+      }
   }
