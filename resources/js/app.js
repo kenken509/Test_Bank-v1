@@ -2,7 +2,8 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import '../css/app.css'
 import { ZiggyVue } from 'ziggy'
-
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 
@@ -15,6 +16,7 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(ZiggyVue)
+      .use(VueSweetalert2)
       .mount(el)
   },
 })

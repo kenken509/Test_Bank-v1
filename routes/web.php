@@ -27,4 +27,5 @@ Route::controller(UserManagementController::class)->group(function(){
 
 Route::controller(DepartmentController::class)->group(function(){
     Route::get('/departments', 'showDepartment')->name('departments.show');
+    Route::delete('/test_bank/departments/delete/{id}','destroy')->name('department.delete');
 });

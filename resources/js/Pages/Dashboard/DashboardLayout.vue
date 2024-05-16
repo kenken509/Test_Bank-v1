@@ -141,6 +141,7 @@
                     </svg>
                 </button>
                 Welcome back, {{ user.role }} {{ user.name }}
+               
             </div>
             <div class="p-8  ">
                 

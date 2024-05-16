@@ -9,7 +9,8 @@
                 </svg>
             </div> 
         </div>
-
+        <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
+        <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
         <!--TABLE-->
         <div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -20,7 +21,7 @@
                             <th scope="col" class="px-6 py-3">Divisions</th>
                             <th scope="col" class="px-6 py-3">Department Head</th>
                             <th scope="col" class="px-6 py-3">Faculties</th>
-                            <th scope="col" class="px-6 py-3">Action</th>
+                            <th scope="col" class="flex justify-center px-6 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,8 +41,12 @@
                                 <span v-for="faculty in dep.faculty" :key="faculty.id" class="py-2">{{ faculty.name }}</span>
                             </td>
                             <td v-if="!dep.faculty.length" class="px-6 py-4">--</td>
-                            <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <td class="flex justify-center px-6 py-4 space-x-4">
+
+                                <button @click="deleteConfirmation(dep.id)" class=" btn-warning">Delete</button>
+                                <Link href='' class="btn-success">
+                                    Update
+                                </Link>
                             </td>
                         </tr>
                     </tbody>
@@ -63,6 +68,8 @@
 <script setup>
 import DashboardLayout from '../DashboardLayout.vue'
 import { computed, ref } from 'vue'
+import { Link, router } from '@inertiajs/vue3';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 const data = defineProps({
     departments: Array,
@@ -99,4 +106,66 @@ function prevPage() {
         currentPage.value--
     }
 }
+
+
+    const deleteConfirmation = (depId)=> 
+    { 
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+            }).then((result) => {
+                if(result.isConfirmed)
+                {
+                    const deleteUrl = route('department.delete',{id: depId })
+
+                    router.delete(deleteUrl);
+                }
+
+                if(result.isDismissed)
+                {
+                    Swal.fire({
+                        title:'Canceled',
+                        text:'Your action was canceled!',
+                        icon:'error',
+                        confirmButtonColor: '#3085d6',
+                    })
+                }
+        });
+    }  
+
+    function successMessage(message)
+    {
+        Swal.fire({
+            title:'Success',
+            text:message,
+            icon:'success',
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        }).then((result)=>{
+            if(result.isConfirmed)
+            {
+                location.reload();
+            }
+        })
+    }
+    
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message + '!',
+            allowOutsideClick:false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        })
+    }
 </script>
