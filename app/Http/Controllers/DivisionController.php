@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Division;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class DivisionController extends Controller
@@ -33,5 +34,14 @@ class DivisionController extends Controller
             // Return with an error message
             return redirect()->back()->with('error', 'Error occurred while trying to delete the department. Please try again.');
         }
+    }
+
+    public function addDivision()
+    {   
+        $existingDep = Department::latest()->get();
+
+        return inertia('Dashboard/Division/DivisionAdd',[
+            'existingDepartment' => $existingDep,
+        ]);
     }
 }
