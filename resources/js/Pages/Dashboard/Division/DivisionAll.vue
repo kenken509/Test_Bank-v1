@@ -9,26 +9,40 @@
                 </svg>
             </div> 
         </div>
+
+        <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
+        <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-200 uppercase bg-blue-900 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">Division Name</th>
                         <th scope="col" class="px-6 py-3">Department Name</th>
-                        <th scope="col" class="px-6 py-3">Faculties</th>
                         <th scope="col" class="flex justify-center px-6 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="div in data.division" :key="div.id">
-                        <thead>
-
-                        </thead>
+                    <tr v-for="div in data.division" :key="div.id" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ div.name }}
+                        </th>
+                        <td class=" align-middle px-6 ">
+                            {{ div.department.name }}
+                        </td>
+                        <td class="px-6 py-4 text-center ">
+                                <div  class="space-x-4">
+                                    <button @click="deleteConfirmation(div.id)" class=" btn-warning">Delete</button>
+                                    <Link href='' class="btn-success">
+                                        Update
+                                    </Link>
+                                </div>
+                            </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        {{ data.division }}
+        
     </DashboardLayout>
 
 </template>
@@ -36,10 +50,76 @@
 <script setup>
 import DashboardLayout from '../DashboardLayout.vue';
 import {ref} from 'vue'
+import { Link, router } from '@inertiajs/vue3';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
 
 const data = defineProps({
     division:Array,
 })
 
 const searchField = ref('')
+
+
+const deleteConfirmation = (divId)=> 
+    { 
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+            }).then((result) => {
+                if(result.isConfirmed)
+                {
+                    const deleteUrl = route('division.delete',{id: divId })
+
+                    router.delete(deleteUrl);
+                }
+
+                if(result.isDismissed)
+                {
+                    Swal.fire({
+                        title:'Canceled',
+                        text:'Your action was canceled!',
+                        icon:'error',
+                        confirmButtonColor: '#3085d6',
+                    })
+                }
+        });
+    }  
+
+    function successMessage(message)
+    {
+        Swal.fire({
+            title:'Success',
+            text:message,
+            icon:'success',
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        }).then((result)=>{
+            if(result.isConfirmed)
+            {
+                location.reload();
+            }
+        })
+    }
+    
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message + '!',
+            allowOutsideClick:false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        })
+    }
+
 </script>

@@ -13,4 +13,25 @@ class DivisionController extends Controller
             'division' => Division::with('department', 'faculties')->get(),
         ]);
     }
+
+    public function destroy($id)
+    {
+        
+
+        try
+        {
+            $divToDelete = Division::findOrFail($id);
+            $divToDelete->delete();
+
+            return redirect()->back()->with('success', 'Successfully Deleted.');
+        }
+        catch(Exception $e)
+        {
+            // Log the exception message if needed
+            Log::error('Division Deletion Error: ' . $e->getMessage());
+    
+            // Return with an error message
+            return redirect()->back()->with('error', 'Error occurred while trying to delete the department. Please try again.');
+        }
+    }
 }
