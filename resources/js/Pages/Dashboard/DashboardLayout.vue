@@ -38,13 +38,14 @@
 
                         <div class="w-full">
                             <button @click="depMgmtToggleMenu" class="flex w-full items-center justify-between pr-8 ">
-                             Department Mgmt
+                             Department Mgmt 
                                 <svg v-if="showDepMgmtMenu" class="w-6 h-6  text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
                                 </svg>
                                 <svg v-else class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
                                 </svg>
+                                
                             </button>
                             
                         </div>
@@ -87,6 +88,56 @@
                     </ul>
                 </div>
                 <!-- DEPARTMENT MANAGEMENT -->
+
+                <!-- DIVISION MANAGEMENT -->
+                <div>
+                    <div class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900" >
+                        <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.5 3a3.5 3.5 0 0 0-3.456 4.06L8.143 9.704a3.5 3.5 0 1 0-.01 4.6l5.91 2.65a3.5 3.5 0 1 0 .863-1.805l-5.94-2.662a3.53 3.53 0 0 0 .002-.961l5.948-2.667A3.5 3.5 0 1 0 17.5 3Z"/>
+                        </svg>  
+
+
+                        <div class="w-full">
+                            <button @click="divMgmtToggleMenu" class="flex w-full items-center justify-between pr-8 ">
+                             Division Mgmt 
+                                <svg v-if="showDivMgmtMenu" class="w-6 h-6  text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                                </svg>
+                                <svg v-else class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+                                </svg>
+
+                            </button>
+                            
+                        </div>
+                    </div>
+                    <ul 
+                        v-if="showDivMgmtMenu"
+                        
+                    >
+                        <Link :href="route('division.show')">
+                            <li @click="toggleBackground('div1')" :class="{'bg-blue-900':clickedItem == 'div1'}" class="flex pl-10  items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
+                            
+                                <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.5 3a3.5 3.5 0 0 0-3.456 4.06L8.143 9.704a3.5 3.5 0 1 0-.01 4.6l5.91 2.65a3.5 3.5 0 1 0 .863-1.805l-5.94-2.662a3.53 3.53 0 0 0 .002-.961l5.948-2.667A3.5 3.5 0 1 0 17.5 3Z"/>
+                                </svg>
+
+                                Divisions
+                            </li>
+                        </Link>
+                        
+                        <li @click="toggleBackground('div2')" :class="{'bg-blue-900':clickedItem == 'div2'}" class="flex pl-10 items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
+                            <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+                            </svg>
+
+                            Add
+                        </li>
+                       
+                    </ul>
+                </div>
+                <!-- DIVISION MANAGEMENT -->
+
 
                 <!-- USER MANAGEMENT MENU-->
                 <div>
@@ -168,6 +219,14 @@ const showDepMgmtMenu = ref(false)
 
 const depMgmtToggleMenu = ()=>{
     showDepMgmtMenu.value = !showDepMgmtMenu.value
+    clickedItem.value = 0
+}
+
+// DIVISION MANAGEMENT LOGIC
+const showDivMgmtMenu = ref(false)
+
+const divMgmtToggleMenu = ()=>{
+    showDivMgmtMenu.value = !showDivMgmtMenu.value
     clickedItem.value = 0
 }
 

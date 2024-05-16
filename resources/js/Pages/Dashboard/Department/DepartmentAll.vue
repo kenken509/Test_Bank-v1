@@ -29,7 +29,7 @@
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ dep.name }}
                             </th>
-                            <td v-if="dep.divisions.length" class="flex flex-col px-6">
+                            <td v-if="dep.divisions.length" class="flex flex-col px-6 ">
                                 <span v-for="division in dep.divisions" :key="division.id" class="py-2">{{ division.name }}</span>
                             </td>
                             <td v-if="!dep.divisions.length" class="flex px-6 py-4">--</td>
@@ -41,12 +41,13 @@
                                 <span v-for="faculty in dep.faculty" :key="faculty.id" class="py-2">{{ faculty.name }}</span>
                             </td>
                             <td v-if="!dep.faculty.length" class="px-6 py-4">--</td>
-                            <td class="flex justify-center px-6 py-4 space-x-4">
-
-                                <button @click="deleteConfirmation(dep.id)" class=" btn-warning">Delete</button>
-                                <Link href='' class="btn-success">
-                                    Update
-                                </Link>
+                            <td class="px-6 py-4 text-center ">
+                                <div  class="space-x-4">
+                                    <button @click="deleteConfirmation(dep.id)" class=" btn-warning">Delete</button>
+                                    <Link href='' class="btn-success">
+                                        Update
+                                    </Link>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

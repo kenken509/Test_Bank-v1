@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\UserManagementController;
@@ -28,4 +29,8 @@ Route::controller(UserManagementController::class)->group(function(){
 Route::controller(DepartmentController::class)->group(function(){
     Route::get('/departments', 'showDepartment')->name('departments.show');
     Route::delete('/test_bank/departments/delete/{id}','destroy')->name('department.delete');
+});
+
+Route::controller(DivisionController::class)->group(function(){
+    Route::get('/test_bank/divisions', 'showDivision')->name('division.show');
 });
