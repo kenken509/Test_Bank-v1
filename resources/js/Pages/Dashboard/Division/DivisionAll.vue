@@ -33,7 +33,7 @@
                         <td class="px-6 py-4 text-center ">
                                 <div  class="space-x-4">
                                     <button @click="deleteConfirmation(div.id)" class=" btn-warning">Delete</button>
-                                    <Link href='' class="btn-success">
+                                    <Link :href="route('division.update.show',{id:div.id})" class="btn-success">
                                         Update
                                     </Link>
                                 </div>

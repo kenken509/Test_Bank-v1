@@ -36,4 +36,6 @@ Route::controller(DivisionController::class)->group(function(){
     Route::delete('/test_bank/divisions/delete/{id}', 'destroy')->name('division.delete');
     Route::get('/test_bank/divisions/add', 'addDivision')->name('division.add');
     Route::post('/test_bank/divisions/store', 'storeDivision')->name('division.store');
+    Route::get('/test_bank/divisions/update/{id}', 'updateShow')->name('division.update.show');
+    Route::put('/test_bank/divisions/update/store', 'storeUpdate')->name('division.update.store');
 });
