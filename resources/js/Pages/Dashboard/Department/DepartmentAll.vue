@@ -1,7 +1,7 @@
 <template>
     <DashboardLayout>
-        <div class="flex items-center justify-between border-bot-only py-2 mb-4">
-            <span class="text-[20px] font-bold text-gray-500">Departments Page</span> 
+        <div class="flex items-center justify-end border-bot-only py-2 mb-4">
+           
             <div class="relative">
                 <input v-model="searchField" type="text" placeholder="search" class="rounded-md">
                 <svg class="absolute top-3 right-2 w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -9,9 +9,24 @@
                 </svg>
             </div> 
         </div>
+        <div class="flex justify-between items-center">
+            <span class="text-[20px] font-bold text-gray-500">Departments </span> 
+            <div >
+                
+                <button @click="visible=true" class="btn-primary px-4 flex gap-2 items-center "> 
+                    <svg class=" w-4 h-4 text-gray-100 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+                    </svg>                 
+                    NEW
+                </button>
+            </div>
+            
+        </div>
+        
         <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
         <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
         <!--TABLE-->
+        
         <div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -63,19 +78,35 @@
             <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 mx-1 bg-blue-800 text-white rounded-md disabled:opacity-50">Next</button>
         </div>
         <!--PAGINATION CONTROLS-->
+        
+        <!--modal-->
+        <Dialog v-model:visible="visible" modal header="New Department" :style="{ width: '25rem' }">
+            <div class="border mb-4">
+
+            </div>
+            <div class="flex flex-col align-items-center gap-3 mb-3">{{ form.departmentName }}
+                <label for="username" class="font-semibold w-6rem">Department Name</label>
+                <!-- <InputText id="username" class="flex-auto border border-gray-500  " autocomplete="off"  placeholder="Enter department name" /> -->
+                <input v-model="form.departmentName" type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
+            </div>
+            
+            <button @click="submit" type="button" class="w-full btn-primary" >Save</button>
+        </Dialog>
+        <!--modal-->
     </DashboardLayout>
 </template>
 
 <script setup>
 import DashboardLayout from '../DashboardLayout.vue'
 import { computed, ref } from 'vue'
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 const data = defineProps({
     departments: Array,
 })
 
+const visible = ref(false);
 const searchField = ref('')
 const itemsPerPage = 10 // Number of items to display per page
 const currentPage = ref(1)
@@ -168,5 +199,14 @@ function prevPage() {
                 location.reload();
             }
         })
+    }
+
+    const form = useForm({
+        departmentName:'',
+    })
+
+    const submit = ()=>{
+        form.post(route('department.store'));
+        visible.value = false;
     }
 </script>

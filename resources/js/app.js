@@ -5,6 +5,16 @@ import { ZiggyVue } from 'ziggy'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+// PrimeVue CSS imports
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/themes/aura-light-green/theme.css'
+import 'primeicons/primeicons.css'
+import 'primevue/resources/primevue.min.css'
+
+// PrimeVue component imports
+import Dialog from 'primevue/dialog';
+import Button from "primevue/button"
+import InputText from 'primevue/inputtext';
 
 
 createInertiaApp({
@@ -16,7 +26,11 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(ZiggyVue)
+      .use(PrimeVue)
       .use(VueSweetalert2)
+      .component('Dialog',Dialog)
+      .component('Button',Button)
+      .component('InputText',InputText)
       .mount(el)
   },
 })

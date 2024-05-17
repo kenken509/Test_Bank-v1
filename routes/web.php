@@ -28,7 +28,9 @@ Route::controller(UserManagementController::class)->group(function(){
 
 Route::controller(DepartmentController::class)->group(function(){
     Route::get('/departments', 'showDepartment')->name('departments.show');
+    Route::get('/department/add', 'addDepartment')->name('department.add');
     Route::delete('/test_bank/departments/delete/{id}','destroy')->name('department.delete');
+    Route::post('/test_bank/departments/store', 'storeDepartment')->name('department.store');
 });
 
 Route::controller(DivisionController::class)->group(function(){

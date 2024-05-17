@@ -6,6 +6,7 @@ use Log;
 use Exception;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentController extends Controller
 {
@@ -21,7 +22,7 @@ class DepartmentController extends Controller
                     $query->where('role', 'faculty');
                 },
                 'divisions',
-            ])->get(),
+            ])->latest()->get(),
         ]);
     }
 
@@ -33,7 +34,7 @@ class DepartmentController extends Controller
             $depTodelete->delete();
     
             return redirect()->back()->with('success', 'Successfully deleted!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log the exception message if needed
             Log::error('Department Deletion Error: ' . $e->getMessage());
     
@@ -43,5 +44,34 @@ class DepartmentController extends Controller
 
     }
 
-    
+    public function addDepartment()
+    {
+        return inertia('Dashboard/Department/DepartmentAdd');
+    }
+
+    public function storeDepartment(Request $request)
+    {
+        try{
+            DB::beginTransaction();
+            $newDepartment = new Department();
+
+            $newDepartment->name = $request->departmentName;
+            $newDepartment->save();
+
+            // Simulate an error
+            //throw new \Exception('Simulated error');
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Successfully created new department.');
+        }catch(\Exception $e)
+        {
+            DB::rollback();
+
+            // Log the exception message if needed
+            Log::error('Failed to create new department error: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to create new department');
+        }
+        
+    }
 }
