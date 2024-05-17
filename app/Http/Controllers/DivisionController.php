@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Division;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DivisionController extends Controller
 {
     public function showDivision()
     {
         return inertia('Dashboard/Division/DivisionAll', [
-            'division' => Division::with('department', 'faculties')->get(),
+            'division' => Division::with('department', 'faculties')->latest()->get(),
         ]);
     }
 
@@ -43,5 +44,39 @@ class DivisionController extends Controller
         return inertia('Dashboard/Division/DivisionAdd',[
             'existingDepartment' => $existingDep,
         ]);
+    }
+
+    public function storeDivision(Request $request)
+    {
+        
+
+        try{
+
+            DB::beginTransaction();
+
+            $newDivision = new Division();
+
+            $newDivision->name = $request->divisionName;
+            $newDivision->department_id = $request->departmentId;
+            $newDivision->save();
+
+            DB::commit();
+
+        return redirect()->back()->with('success','Successfully created new division.');
+        }catch(Exception $e){
+
+            DB::rollback();
+
+            // Log the error details
+            Log::error('Failed to create new division', [
+                'error' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+                'input_data' => $request->all()
+            ]);
+            return redirect()->back()-with('error', 'Failed to create new division. Please try again.');
+        }
+        
+
+       
     }
 }

@@ -35,4 +35,5 @@ Route::controller(DivisionController::class)->group(function(){
     Route::get('/test_bank/divisions', 'showDivision')->name('division.show');
     Route::delete('/test_bank/divisions/delete/{id}', 'destroy')->name('division.delete');
     Route::get('/test_bank/divisions/add', 'addDivision')->name('division.add');
+    Route::post('/test_bank/divisions/store', 'storeDivision')->name('division.store');
 });
