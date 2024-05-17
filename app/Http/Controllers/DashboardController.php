@@ -8,6 +8,6 @@ class DashboardController extends Controller
 {
     public function showDashboard()
     {
-        return inertia('Dashboard/DashboardLayout');
+        return inertia('Dashboard/Dashboard/Dashboard');
     }
 }
