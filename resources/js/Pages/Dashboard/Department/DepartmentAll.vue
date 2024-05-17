@@ -9,6 +9,9 @@
                 </svg>
             </div> 
         </div>
+        <div v-if="form.errors.departmentName">
+            {{ errorMessage(form.errors.departmentName) }}
+        </div>
         <div class="flex justify-between items-center">
             <span class="text-[20px] font-bold text-gray-500">Departments </span> 
             <div >
@@ -59,9 +62,9 @@
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                     <button @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete</button>
-                                    <Link href='' class="btn-success my-2">
+                                    <button @click="showUpdateModal(dep)" type="button" class="btn-success my-2">
                                         Update
-                                    </Link>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -79,12 +82,12 @@
         </div>
         <!--PAGINATION CONTROLS-->
         
-        <!--modal-->
+        <!--add department modal-->
         <Dialog v-model:visible="visible" modal header="New Department" :style="{ width: '25rem' }">
             <div class="border mb-4">
 
             </div>
-            <div class="flex flex-col align-items-center gap-3 mb-3">{{ form.departmentName }}
+            <div class="flex flex-col align-items-center gap-3 mb-3">
                 <label for="username" class="font-semibold w-6rem">Department Name</label>
                 <!-- <InputText id="username" class="flex-auto border border-gray-500  " autocomplete="off"  placeholder="Enter department name" /> -->
                 <input v-model="form.departmentName" type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
@@ -92,19 +95,37 @@
             
             <button @click="submit" type="button" class="w-full btn-primary" >Save</button>
         </Dialog>
-        <!--modal-->
+        <!--add department modal-->
+
+
+
+
+        <!--update department modal-->
+        <Dialog v-model:visible="updateModal" modal header="Update Department" :style="{ width: '25rem' }">
+            <div class="border mb-4">
+            </div>
+            
+            <div class="flex flex-col align-items-center gap-3 mb-3">
+                <label for="username" class="font-semibold w-6rem">Department Name</label>
+                <!-- <InputText id="username" class="flex-auto border border-gray-500  " autocomplete="off"  placeholder="Enter department name" /> -->
+                <input v-model="updateForm.departmentName" type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
+            </div>
+            <button @click="update" type="button" class="w-full btn-primary" >Update</button>
+        </Dialog>
+        <!--update department modal-->
     </DashboardLayout>
 </template>
 
 <script setup>
 import DashboardLayout from '../DashboardLayout.vue'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Link, router, useForm } from '@inertiajs/vue3';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 const data = defineProps({
     departments: Array,
 })
+
 
 const visible = ref(false);
 const searchField = ref('')
@@ -209,4 +230,33 @@ function prevPage() {
         form.post(route('department.store'));
         visible.value = false;
     }
+
+    // update logic
+    const updateModal = ref(false)
+    const departmentToUpdate = ref({});
+    const showUpdateModal = (department)=>{
+        updateModal.value = true;
+
+        departmentToUpdate.value = department;
+        updateForm.departmentId = department.id;
+    }
+
+    watch(updateModal, (val)=>{
+        if(val === false)
+        {
+            updateForm.departmentId='';
+            updateForm.departmentName='';
+            departmentToUpdate.value = '';
+        }
+    })
+
+    const updateForm = useForm({
+        departmentId:'',
+        departmentName:'',
+    })
+
+    const update = ()=> {
+        updateForm.put(route('department.update'));
+        updateModal.value = false;
+    } 
 </script>

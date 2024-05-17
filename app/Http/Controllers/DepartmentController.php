@@ -51,6 +51,10 @@ class DepartmentController extends Controller
 
     public function storeDepartment(Request $request)
     {
+        $request->validate([
+            'departmentName' => 'required|unique:departments,name',
+        ]);
+
         try{
             DB::beginTransaction();
             $newDepartment = new Department();
@@ -71,6 +75,30 @@ class DepartmentController extends Controller
             Log::error('Failed to create new department error: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'Failed to create new department');
+        }
+        
+    }
+
+    public function updateDepartment(Request $request)
+    {
+        
+        try{
+            DB::beginTransaction();
+
+            $depToUpdate = Department::findOrFail($request->departmentId);
+
+            $depToUpdate->name = $request->departmentName;
+            $depToUpdate->save();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Updated Successfully.');
+        }catch(\Exception $e)
+        {
+            DB::rollback();
+            Log::error('Failed to update department:  '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to update department');
         }
         
     }
