@@ -42,9 +42,9 @@
                             </td>
                             <td v-if="!dep.faculty.length" class="px-6 py-4">--</td>
                             <td class="px-6 py-4 text-center ">
-                                <div  class="space-x-4">
-                                    <button @click="deleteConfirmation(dep.id)" class=" btn-warning">Delete</button>
-                                    <Link href='' class="btn-success">
+                                <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
+                                    <button @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete</button>
+                                    <Link href='' class="btn-success my-2">
                                         Update
                                     </Link>
                                 </div>
@@ -57,7 +57,7 @@
         <!--TABLE-->
 
         <!--PAGINATION CONTROLS-->
-        <div class="flex justify-center items-center mt-4">
+        <div class="flex  justify-center items-center mt-4">
             <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 mx-1 bg-blue-800 text-white rounded-md disabled:opacity-50">Previous</button>
             <span class="px-4 py-2">{{ currentPage }} / {{ totalPages }}</span>
             <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 mx-1 bg-blue-800 text-white rounded-md disabled:opacity-50">Next</button>
