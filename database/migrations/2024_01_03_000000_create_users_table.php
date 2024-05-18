@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['Admin','co-Admin','Dep-head','Faculty'])->nullable();
+            $table->enum('role', ['admin','co-admin','department head','faculty'])->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->unsignedBigInteger('division_id')->nullable();
             $table->rememberToken();

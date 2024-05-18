@@ -15,6 +15,8 @@ import 'primevue/resources/primevue.min.css'
 import Dialog from 'primevue/dialog';
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
+import InputMask from 'primevue/inputmask';
+
 
 
 createInertiaApp({
@@ -31,6 +33,7 @@ createInertiaApp({
       .component('Dialog',Dialog)
       .component('Button',Button)
       .component('InputText',InputText)
+      .component('InputMask',InputMask)
       .mount(el)
   },
 })

@@ -34,8 +34,8 @@
         
         <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
         <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
-        <!--TABLE-->
         
+        <!--TABLE--> 
         <div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -53,18 +53,30 @@
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ dep.name }}
                             </th>
-                            <td v-if="dep.divisions.length" class="flex flex-col px-6 ">
-                                <span v-for="division in dep.divisions" :key="division.id" class="py-2">{{ division.name }}</span>
+                            <td >
+                                <div  v-if="dep.divisions.length" class="flex flex-col px-6 ">
+                                    <span v-for="division in dep.divisions" :key="division.id" class="py-2">{{ division.name }}</span>
+                                </div>
                             </td>
-                            <td v-if="!dep.divisions.length" class="flex px-6 py-4">--</td>
-                            <td v-if="dep.department_heads.length" class="flex flex-col px-6">
-                                <span v-for="depHead in dep.department_heads" :key="depHead.id" class="py-2">{{ depHead.name }}</span>
+                            
+                            <td >
+                                <div v-if="dep.department_heads.length" class="flex flex-col px-6">
+                                    <span v-for="depHead in dep.department_heads" :key="depHead.id" class="py-2">{{ depHead.name }}</span>
+                                </div>
+                                <div v-else>
+                                    --
+                                </div>
                             </td>
-                            <td v-if="!dep.department_heads.length" class="px-6 py-4">--</td>
-                            <td v-if="dep.faculty.length" class="px-6 py-4">
-                                <span v-for="faculty in dep.faculty" :key="faculty.id" class="py-2">{{ faculty.name }}</span>
+                           
+                            <td >
+                                <div v-if="dep.faculty.length" class="px-6 py-4">
+                                    <span v-for="faculty in dep.faculty" :key="faculty.id" class="py-2">{{ faculty.name }}</span>
+                                </div>
+                                <div v-else>
+                                    --
+                                </div>
                             </td>
-                            <td v-if="!dep.faculty.length" class="px-6 py-4">--</td>
+                            
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                     <button @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete</button>
