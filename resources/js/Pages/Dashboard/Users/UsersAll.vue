@@ -102,16 +102,16 @@
                     
                     <div class="flex flex-col align-items-center gap-3 mb-3 col-span-2 md:col-span-1 relative">
                         <label for="role" class="font-semibold w-6rem">Role</label>
-                        <select v-model="addNewUserForm.role" id="role" class="w-full rounded border-gray-500" required>
+                        <select @change="checkRol" v-model="addNewUserForm.role" id="role" class="w-full rounded border-gray-500" required>
                             <option value="" selected hidden>Select a role</option>
                             <option v-for="(role, index) in roles" :key="index">{{ role }}</option>
                         </select>
                         <span v-if="addNewUserValidatorRole" class="absolute inset-y-20 text-red-500 absolute" >{{ addNewUserValidatorRole }} </span> 
                     </div>
 
-                    <div class="flex flex-col align-items-center gap-3 mb-3 col-span-2 md:col-span-1 relative" >
+                    <div  class="flex flex-col align-items-center gap-3 mb-3 col-span-2 md:col-span-1 relative  "  >
                         <label for="departmentName" class="font-semibold w-6rem">Department</label>
-                        <select v-model="addNewUserForm.department"  id="departmentName" class="w-full rounded border-gray-500" required>
+                        <select v-model="addNewUserForm.department"  id="departmentName" class="w-full rounded border-gray-500" required :class="{'pointer-events-none':isAdmin, ' opacity-40':isAdmin, 'bg-gray-300':isAdmin}"  >
                             <option value="" selected hidden>Select a department</option>
                             <option v-for="dep in data.departments" :key="dep.id" :value="dep">{{ dep.name }}</option>
                         </select>
@@ -148,6 +148,8 @@ import { useForm } from '@inertiajs/vue3';
 import DashboardLayout from '../DashboardLayout.vue'
 import { computed, ref, watch } from 'vue'
 
+
+
 const searchField = ref('')
 const data = defineProps({
     users:Array,
@@ -164,6 +166,7 @@ const roles = ref([
 
 
 //add user logic
+
 const addUserModalVisible = ref(false);
 const addNewUserForm = useForm({
     email:'',
@@ -172,7 +175,19 @@ const addNewUserForm = useForm({
     department:'',
     division_id:'',
 })
-const createUser = ref(false);
+
+const isAdmin = ref(false)
+const checkRol = ()=>{
+    if(addNewUserForm.role === 'admin' || addNewUserForm.role ==='co-admin')
+    {
+        isAdmin.value = true
+    }
+    else
+    {
+        isAdmin.value = false
+    }
+}
+
 const addNewUserValidator = ref({
     email:'',
     name:'',
@@ -197,7 +212,20 @@ const submitNewUser = ()=> {
     addNewUserValidatorEmail.value = !addNewUserForm.email ? 'Email is required': !isValidEmail(addNewUserForm.email) ? 'Invalid email format' : ''
     addNewUserValidatorName.value = !addNewUserForm.name ? 'Name is required': ''
     addNewUserValidatorRole.value = !addNewUserForm.role ? 'Role is required': ''
-    addNewUserValidatorDep.value = !addNewUserForm.department ? 'Department is required': ''
+   
+
+    if(!addNewUserForm.department)
+    {
+        if(addNewUserForm.role === 'admin' || addNewUserForm.role === 'co-admin')
+        {
+            addNewUserValidatorDep.value = ''
+        }
+        else
+        {
+            addNewUserValidatorDep.value =  'Department is required.'
+        }
+        
+    }
     
     if(addNewUserForm.department)
     {
@@ -214,7 +242,7 @@ const submitNewUser = ()=> {
     console.log(addNewUserValidator.email);
     if(addNewUserValidatorEmail.value === '' && addNewUserValidatorName.value === '' &&  addNewUserValidatorRole.value === '' && addNewUserValidatorDep.value === '' && addNewUserValidatorDiv.value === '')
     {
-        alert('good to go');
+        addNewUserForm.post(route('user.store'));
         //addNewUserForm.post('');
     }
     
