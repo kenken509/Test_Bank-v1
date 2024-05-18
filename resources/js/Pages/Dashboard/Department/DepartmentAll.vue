@@ -9,6 +9,12 @@
                 </svg>
             </div> 
         </div>
+        <!-- <div v-if="updateform.errors.departmentName">
+            {{ errorMessage(updateform.errors.departmentName) }}
+        </div> -->
+        <div v-if="updateForm.errors.departmentName">
+           {{ errorMessage(updateForm.errors.departmentName) }}
+        </div>
         <div v-if="form.errors.departmentName">
             {{ errorMessage(form.errors.departmentName) }}
         </div>

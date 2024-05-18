@@ -17,14 +17,15 @@ Route::controller(AuthController::class)->group(function(){
     Route::delete('/logout', 'destroy')->name('logout');
 });
 
+Route::controller(UserManagementController::class)->group(function(){
+    Route::get('/test_bank/users', 'showUsers')->name('users.show');
+});
 
 Route::controller(DashboardController::class)->group(function(){
     Route::get('/dashboard', 'showDashboard')->name('dashboard.show');
 });
 
-Route::controller(UserManagementController::class)->group(function(){
-    Route::get('/users-all', 'showUser')->name('users.show');
-});
+
 
 Route::controller(DepartmentController::class)->group(function(){
     Route::get('/departments', 'showDepartment')->name('departments.show');

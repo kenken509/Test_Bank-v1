@@ -81,7 +81,10 @@ class DepartmentController extends Controller
 
     public function updateDepartment(Request $request)
     {
-        
+        $request->validate([
+            'departmentName' => 'required|unique:departments,name',
+        ]);
+
         try{
             DB::beginTransaction();
 
