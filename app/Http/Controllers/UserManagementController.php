@@ -28,6 +28,8 @@ class UserManagementController extends Controller
         // role:'',
         // department:'',
         // division_id:'',
+        
+        
         $defaultPassword = 'Ncst1234#';
         $newUser = new User();
         
@@ -36,7 +38,7 @@ class UserManagementController extends Controller
         $newUser->email = $request->email;
         $newUser->password = Hash::make($defaultPassword);
         $newUser->role = $request->role;
-        $newUser->department_id = $request->department['id'];
+        $newUser->department_id = $request->department;
         $newUser->division_id = $request->division_id; 
         $newUser->save();
 

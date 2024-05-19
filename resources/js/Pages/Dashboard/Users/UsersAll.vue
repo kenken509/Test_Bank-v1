@@ -123,7 +123,7 @@
                         <label for="departmentName" class="font-semibold w-6rem">Division</label>
                         <select  v-model="addUserDivision"  id="departmentName" class="w-full rounded border-gray-500" required>
                             <option value="" selected hidden>Select a division</option>
-                            <option v-for="div in addUserDepartment.divisions" :key="div.id">{{ div.name }}</option>
+                            <option v-for="div in addUserDepartment.divisions" :key="div.id" :value="div">{{ div.name }}</option>
                         </select>
                         <span v-if="addNewUserValidatorDiv" class="absolute inset-y-20 text-red-500 absolute" >{{ addNewUserValidatorDiv }} </span> 
                     </div>
@@ -132,7 +132,7 @@
                 </div>
                 
             </form>
-            
+           email: {{ addNewUserForm.email }} || name: {{ addNewUserForm.name }} || role: {{ addUserRole }} || department: {{ addUserDepartment.id }} || division {{ addUserDivision.id }}
             <div class="mt-4">
                 <button @click="submitNewUser" type="button" :disabled="addNewUserForm.processing" class="w-full btn-primary " >Save</button>
             </div>
@@ -189,7 +189,7 @@ watch(addUserRole,(val)=>{
     
     if(val === 'admin' || val ==='co-admin')
     {
-        alert('role is:' +val)
+       
         isAdmin.value = true // disable department
         isDepHead.value = false
         isFaculty.value = false
@@ -205,7 +205,8 @@ watch(addUserRole,(val)=>{
 
     if(val === 'department head')
     {
-        alert('role is:' +val)
+       
+        
         isDepHead.value = true;
         isAdmin.value = false;
         isFaculty.value = false;
@@ -217,8 +218,8 @@ watch(addUserRole,(val)=>{
 
     if(val === 'faculty')
     {
-        alert('role is:' +val)
-        alert('the role was changed to faculty')
+       
+        
         isFaculty.value = true;
         isAdmin.value = false;
         isDepHead.value = false
@@ -371,8 +372,13 @@ const submitNewUser = ()=> {
     
     if(addNewUserValidatorEmail.value === '' && addNewUserValidatorName.value === '' &&  addNewUserValidatorRole.value === '' && addNewUserValidatorDep.value === '' && addNewUserValidatorDiv.value === '')
     {
-        alert('good to go')
-        //addNewUserForm.post(route('user.store'));
+        
+        //email: {{ addNewUserForm.email }} || name: {{ addNewUserForm.name }} || role: {{ addUserRole }} || department: {{ addUserDepartment.id }} || division {{ addUserDivision.id }}
+        addNewUserForm.role = addUserRole.value;
+        addNewUserForm.department = addUserDepartment.value.id;
+        addNewUserForm.division_id = addUserDivision.value.id;
+        addNewUserForm.post(route('user.store'));
+        addUserModalVisible.value = false;
         //addNewUserForm.post('');
     }
     
