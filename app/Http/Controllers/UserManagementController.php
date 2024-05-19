@@ -31,6 +31,10 @@ class UserManagementController extends Controller
         $defaultPassword = 'Ncst1234#';
         $newUser = new User();
         
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+        ]);
+
         try
         {
             DB::beginTransaction();

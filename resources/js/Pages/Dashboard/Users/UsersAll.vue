@@ -11,6 +11,7 @@
        </div>
        <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
         <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
+        <div v-if="addNewUserForm.errors.email">{{errorMessage(addNewUserForm.errors.email)}}</div>
        <div class="flex justify-between items-center">
             <span class="text-[20px] font-bold text-gray-500">Users </span> 
             <div >
@@ -67,7 +68,7 @@
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                     <button @click="deleteConfirmation(user.id)" class=" btn-warning my-2">Delete</button>
-                                    <button @click="showUpdateModal(dep)" type="button" class="btn-success my-2">
+                                    <button @click="updateUserModal(user.id)" type="button" class="btn-success my-2">
                                         Update
                                     </button>
                                 </div>
@@ -269,6 +270,7 @@ const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
 }
+
 const submitNewUser = ()=> {
 
     addNewUserValidatorEmail.value = !addNewUserForm.email ? 'Email is required': !isValidEmail(addNewUserForm.email) ? 'Invalid email format' : ''
@@ -387,6 +389,7 @@ const submitNewUser = ()=> {
     
     
 }
+
 
 
 // sweet alerts logic
