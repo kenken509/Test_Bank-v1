@@ -102,25 +102,26 @@
                     
                     <div class="flex flex-col align-items-center gap-3 mb-3 col-span-2 md:col-span-1 relative">
                         <label for="role" class="font-semibold w-6rem">Role</label>
-                        <select @change="checkRol" v-model="addNewUserForm.role" id="role" class="w-full rounded border-gray-500" required>
+                        <select v-model="addUserRole" id="role" class="w-full rounded border-gray-500" required>
                             <option value="" selected hidden>Select a role</option>
                             <option v-for="(role, index) in roles" :key="index">{{ role }}</option>
                         </select>
                         <span v-if="addNewUserValidatorRole" class="absolute inset-y-20 text-red-500 absolute" >{{ addNewUserValidatorRole }} </span> 
                     </div>
-
+                    
                     <div  class="flex flex-col align-items-center gap-3 mb-3 col-span-2 md:col-span-1 relative  "  >
+                        
                         <label for="departmentName" class="font-semibold w-6rem">Department</label>
-                        <select v-model="addNewUserForm.department"  id="departmentName" class="w-full rounded border-gray-500" required :class="{'pointer-events-none':isAdmin, ' opacity-40':isAdmin, 'bg-gray-300':isAdmin}"  >
+                        <select v-model="addUserDepartment"  id="departmentName" class="w-full rounded border-gray-500 " required :class="{'pointer-events-none':isAdmin || !addUserRole, ' opacity-40':isAdmin || !addUserRole, 'bg-gray-300':isAdmin || !addUserRole}"  >
                             <option value="" selected hidden>Select a department</option>
                             <option v-for="dep in data.departments" :key="dep.id" :value="dep">{{ dep.name }}</option>
                         </select>
                         <span v-if="addNewUserValidatorDep" class="absolute inset-y-20 text-red-500 absolute" >{{ addNewUserValidatorDep }} </span> 
                     </div>
-                    
-                    <div v-if="addNewUserForm.department && addNewUserForm.department.divisions.length" class="flex flex-col align-items-center gap-3 mb-3 col-span-2 relative">
+                   isfaculty = {{ isFaculty }} | hasdivision{{ hasDivision }}
+                    <div v-if="isFaculty && hasDivision" class="flex flex-col align-items-center gap-3 mb-3 col-span-2 relative">
                         <label for="departmentName" class="font-semibold w-6rem">Division</label>
-                        <select  v-model="addNewUserForm.division_id"  id="departmentName" class="w-full rounded border-gray-500" required>
+                        <select  v-model="addUserDivision"  id="departmentName" class="w-full rounded border-gray-500" required>
                             <option value="" selected hidden>Select a division</option>
                             <option v-for="div in addNewUserForm.department.divisions" :key="div.id">{{ div.name }}</option>
                         </select>
@@ -175,26 +176,69 @@ const addNewUserForm = useForm({
     department:'',
     division_id:'',
 })
+const addUserRole = ref('');
+const addUserDepartment = ref('');
+const addUserDivision = ref('');
+
 
 const isAdmin = ref(false)
-const checkRol = ()=>{
-    if(addNewUserForm.role === 'admin' || addNewUserForm.role ==='co-admin')
+const isDepHead = ref(false)
+const isFaculty = ref(false);
+const hasDivision = ref(false);
+watch(addUserRole,(val)=>{
+    
+    if(val === 'admin' || val ==='co-admin')
     {
-        isAdmin.value = true
+        isAdmin.value = true // disable department
+        isDepHead.value = false
+        isFaculty.value = false
+        hasDivision.value = false;
+        addNewUserForm.department = ''
+        addNewUserForm.division_id = ''
     }
     else
     {
-        isAdmin.value = false
+        isAdmin.value = false 
     }
-}
 
-const addNewUserValidator = ref({
-    email:'',
-    name:'',
-    role:'',
-    department:'',
-    division_id:'',
+    if(val === 'department head')
+    {
+        isDepHead.value = true;
+        isAdmin.value = false;
+        isFaculty.value = false;
+        hasDivision.value = false;
+        addNewUserForm.division_id = ''
+    }
+
+    if(val === 'faculty')
+    {
+        isFaculty.value = true;
+        isAdmin.value = false;
+        isDepHead.value = false
+        addUserDepartment.value =''
+        
+    }
+    else
+    {
+        isFaculty.value = false;
+        hasDivision.value = false;
+        addNewUserForm.division_id = ''
+    }
 })
+
+watch(addUserDepartment,(val)=>{
+    
+    if(val.divisions.length)
+    {
+        hasDivision.value = true
+    }
+    else
+    {
+        hasDivision.value = false;
+    }
+    ;
+})
+
 const addNewUserValidatorEmail = ref('')
 const addNewUserValidatorName = ref('')
 const addNewUserValidatorRole = ref('')
@@ -211,38 +255,87 @@ const submitNewUser = ()=> {
 
     addNewUserValidatorEmail.value = !addNewUserForm.email ? 'Email is required': !isValidEmail(addNewUserForm.email) ? 'Invalid email format' : ''
     addNewUserValidatorName.value = !addNewUserForm.name ? 'Name is required': ''
-    addNewUserValidatorRole.value = !addNewUserForm.role ? 'Role is required': ''
-   
-
-    if(!addNewUserForm.department)
+    addNewUserValidatorRole.value = !addUserRole.value ? 'Role is required': ''
+    
+    alert(addUserRole.value)
+    if(addUserRole.value === 'department head')
     {
-        if(addNewUserForm.role === 'admin' || addNewUserForm.role === 'co-admin')
+        
+        alert('adduserdep value: '+!addUserDepartment.value)
+        if(!addUserDepartment.value)
         {
+            
+            addNewUserValidatorDep.value = 'Department is required';
+        }
+        else
+        {
+            
             addNewUserValidatorDep.value = ''
         }
-        else
-        {
-            addNewUserValidatorDep.value =  'Department is required.'
-        }
-        
     }
+
     
-    if(addNewUserForm.department)
-    {
-        const divisions = addNewUserForm.department.divisions;
-        if(divisions.length > 1 && !addNewUserForm.division_id)
-        {
-            addNewUserValidatorDiv.value = 'Division is required.'
-        }
-        else
-        {
-            addNewUserValidatorDiv.value = '';
-        }
-    }
-    console.log(addNewUserValidator.email);
+    // if(!addNewUserForm.department)
+    // {
+    //     if(addNewUserForm.role === 'admin' || addNewUserForm.role === 'co-admin')
+    //     {
+    //         addNewUserValidatorDep.value = ''
+    //     }
+    //     else
+    //     {
+    //         addNewUserValidatorDep.value =  'Department is required.'
+           
+    //     }
+        
+    // }
+    
+    // if(addNewUserForm.department)
+    // {
+       
+    //     addNewUserValidatorDep.value=''
+        
+
+    //     if(addNewUserForm.role === 'department head')
+    //     {
+            
+    //         if(!addNewUserForm.role)
+    //         {
+    //             addNewUserValidatorDep.value =  'Department is required.'
+    //         }
+    //         else
+    //         {
+    //             addNewUserValidatorDep.value = ''
+    //         }
+
+            
+    //         // alert(addNewUserForm.department.name);
+    //         // alert('im department head');
+    //     }
+       
+    //     if(addNewUserForm.role === 'faculty')
+    //     {
+            
+    //         const divisions = addNewUserForm.department.divisions;
+            
+    //         if(divisions.length > 1 && !addNewUserForm.division_id)
+    //         {
+    //             addNewUserValidatorDiv.value = 'Division is required.'
+    //         }
+    //         else
+    //         {
+    //             addNewUserValidatorDiv.value = '';
+    //         }
+           
+    //     }
+        
+    // }
+
+
+    
     if(addNewUserValidatorEmail.value === '' && addNewUserValidatorName.value === '' &&  addNewUserValidatorRole.value === '' && addNewUserValidatorDep.value === '' && addNewUserValidatorDiv.value === '')
     {
-        addNewUserForm.post(route('user.store'));
+        alert('good to go')
+        //addNewUserForm.post(route('user.store'));
         //addNewUserForm.post('');
     }
     
