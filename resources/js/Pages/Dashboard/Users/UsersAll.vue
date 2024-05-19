@@ -118,12 +118,12 @@
                         </select>
                         <span v-if="addNewUserValidatorDep" class="absolute inset-y-20 text-red-500 absolute" >{{ addNewUserValidatorDep }} </span> 
                     </div>
-                   isfaculty = {{ isFaculty }} | hasdivision{{ hasDivision }}
+                   <!-- isfaculty = {{ isFaculty }} | hasdivision{{ hasDivision }} || addUserDepartment = {{ addUserDepartment.name }} -->
                     <div v-if="isFaculty && hasDivision" class="flex flex-col align-items-center gap-3 mb-3 col-span-2 relative">
                         <label for="departmentName" class="font-semibold w-6rem">Division</label>
                         <select  v-model="addUserDivision"  id="departmentName" class="w-full rounded border-gray-500" required>
                             <option value="" selected hidden>Select a division</option>
-                            <option v-for="div in addNewUserForm.department.divisions" :key="div.id">{{ div.name }}</option>
+                            <option v-for="div in addUserDepartment.divisions" :key="div.id">{{ div.name }}</option>
                         </select>
                         <span v-if="addNewUserValidatorDiv" class="absolute inset-y-20 text-red-500 absolute" >{{ addNewUserValidatorDiv }} </span> 
                     </div>
@@ -134,7 +134,7 @@
             </form>
             
             <div class="mt-4">
-                <button @click="submitNewUser" type="button" class="w-full btn-primary " >Save</button>
+                <button @click="submitNewUser" type="button" :disabled="addNewUserForm.processing" class="w-full btn-primary " >Save</button>
             </div>
             
         </Dialog>
@@ -189,12 +189,14 @@ watch(addUserRole,(val)=>{
     
     if(val === 'admin' || val ==='co-admin')
     {
+        alert('role is:' +val)
         isAdmin.value = true // disable department
         isDepHead.value = false
         isFaculty.value = false
         hasDivision.value = false;
-        addNewUserForm.department = ''
-        addNewUserForm.division_id = ''
+        addUserDepartment.value =''
+        addUserDivision.value = ''
+        resetValidationError();
     }
     else
     {
@@ -203,47 +205,60 @@ watch(addUserRole,(val)=>{
 
     if(val === 'department head')
     {
+        alert('role is:' +val)
         isDepHead.value = true;
         isAdmin.value = false;
         isFaculty.value = false;
         hasDivision.value = false;
-        addNewUserForm.division_id = ''
+        addUserDepartment.value = ''
+        addUserDivision.value = ''
+        resetValidationError();
     }
 
     if(val === 'faculty')
     {
+        alert('role is:' +val)
+        alert('the role was changed to faculty')
         isFaculty.value = true;
         isAdmin.value = false;
         isDepHead.value = false
         addUserDepartment.value =''
+        resetValidationError();
         
     }
     else
     {
+       
         isFaculty.value = false;
         hasDivision.value = false;
-        addNewUserForm.division_id = ''
+        addUserDivision.value = ''
     }
 })
 
 watch(addUserDepartment,(val)=>{
     
-    if(val.divisions.length)
-    {
-        hasDivision.value = true
+    // Check if 'divisions' property exists and it's not empty
+    if (val && Array.isArray(val.divisions) && val.divisions.length > 0) {
+        hasDivision.value = true; // Set hasDivision to true
+    } else {
+        hasDivision.value = false; // Set hasDivision to false
     }
-    else
-    {
-        hasDivision.value = false;
-    }
-    ;
+    
 })
 
+function resetValidationError(){
+    addNewUserValidatorEmail.value = ''
+    addNewUserValidatorName.value = ''
+    addNewUserValidatorRole.value = ''
+    addNewUserValidatorDep.value = ''
+    addNewUserValidatorDiv.value = ''
+}
 const addNewUserValidatorEmail = ref('')
 const addNewUserValidatorName = ref('')
 const addNewUserValidatorRole = ref('')
 const addNewUserValidatorDep = ref('')
 const addNewUserValidatorDiv = ref('')
+
 
 // Function to validate email format
 const isValidEmail = (email) => {
@@ -252,16 +267,15 @@ const isValidEmail = (email) => {
 }
 const submitNewUser = ()=> {
 
-
     addNewUserValidatorEmail.value = !addNewUserForm.email ? 'Email is required': !isValidEmail(addNewUserForm.email) ? 'Invalid email format' : ''
     addNewUserValidatorName.value = !addNewUserForm.name ? 'Name is required': ''
     addNewUserValidatorRole.value = !addUserRole.value ? 'Role is required': ''
     
-    alert(addUserRole.value)
+    
     if(addUserRole.value === 'department head')
     {
         
-        alert('adduserdep value: '+!addUserDepartment.value)
+        
         if(!addUserDepartment.value)
         {
             
@@ -271,6 +285,29 @@ const submitNewUser = ()=> {
         {
             
             addNewUserValidatorDep.value = ''
+        }
+    }
+
+    if(addUserRole.value === 'faculty')
+    {
+        if(!addUserDepartment.value)
+        {
+            addNewUserValidatorDep.value = 'Department is required';
+        }
+        else
+        {
+            addNewUserValidatorDep.value = ''
+            if(hasDivision.value)
+            {
+                if(!addUserDivision.value)
+                {
+                    addNewUserValidatorDiv.value = 'Division is required'
+                }
+                else
+                {
+                    addNewUserValidatorDiv.value = ''
+                }
+            }
         }
     }
 
