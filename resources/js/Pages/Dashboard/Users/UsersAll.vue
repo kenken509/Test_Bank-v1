@@ -9,6 +9,8 @@
                </svg>
            </div> 
        </div>
+       <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
+        <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
        <div class="flex justify-between items-center">
             <span class="text-[20px] font-bold text-gray-500">Users </span> 
             <div >
@@ -64,7 +66,7 @@
                             
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
-                                    <button @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete</button>
+                                    <button @click="deleteConfirmation(user.id)" class=" btn-warning my-2">Delete</button>
                                     <button @click="showUpdateModal(dep)" type="button" class="btn-success my-2">
                                         Update
                                     </button>
@@ -132,7 +134,7 @@
                 </div>
                 
             </form>
-           email: {{ addNewUserForm.email }} || name: {{ addNewUserForm.name }} || role: {{ addUserRole }} || department: {{ addUserDepartment.id }} || division {{ addUserDivision.id }}
+           <!-- email: {{ addNewUserForm.email }} || name: {{ addNewUserForm.name }} || role: {{ addUserRole }} || department: {{ addUserDepartment.id }} || division {{ addUserDivision.id }} -->
             <div class="mt-4">
                 <button @click="submitNewUser" type="button" :disabled="addNewUserForm.processing" class="w-full btn-primary " >Save</button>
             </div>
@@ -145,7 +147,8 @@
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 import DashboardLayout from '../DashboardLayout.vue'
 import { computed, ref, watch } from 'vue'
 
@@ -379,10 +382,73 @@ const submitNewUser = ()=> {
         addNewUserForm.division_id = addUserDivision.value.id;
         addNewUserForm.post(route('user.store'));
         addUserModalVisible.value = false;
-        //addNewUserForm.post('');
+        
     }
     
     
 }
 
+
+// sweet alerts logic
+const deleteConfirmation = (userId)=> 
+    { 
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+            }).then((result) => {
+                if(result.isConfirmed)
+                {
+                    const deleteUrl = route('user.delete',{id: userId })
+
+                    router.delete(deleteUrl);
+                }
+
+                if(result.isDismissed)
+                {
+                    Swal.fire({
+                        title:'Canceled',
+                        text:'Your action was canceled!',
+                        icon:'error',
+                        confirmButtonColor: '#3085d6',
+                    })
+                }
+        });
+    }  
+
+    function successMessage(message)
+    {
+        Swal.fire({
+            title:'Success',
+            text:message,
+            icon:'success',
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        }).then((result)=>{
+            if(result.isConfirmed)
+            {
+                location.reload();
+                
+            }
+        })
+    }
+    
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message + '!',
+            allowOutsideClick:false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        })
+    }
 </script>
