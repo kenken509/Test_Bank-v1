@@ -46,8 +46,13 @@ class AuthController extends Controller
         return redirect()->route('dashboard.show')->with('success', 'Successfully registered! Please check your email for verification!');
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
+        Auth::logout();
 
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login.show')->with('success', 'Successfully Logged out.');
     }
 }

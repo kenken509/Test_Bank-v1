@@ -256,9 +256,17 @@
                 </div>
                 
 
-
-
+                <div class="border-b-2 border-gray-700 my-2">
                 
+                </div>   
+                <Link class="w-full" :href="route('logout')" as="button" method="delete">
+                    <div class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900">
+                        <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                        </svg>
+                        <span>Logout</span>
+                    </div>
+                </Link>
             </nav>
         </div>
 
