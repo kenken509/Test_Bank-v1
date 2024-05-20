@@ -25,6 +25,15 @@ class UserManagementController extends Controller
         ]);
     }
 
+    public function showAddUser()
+    {
+        $departments = Department::with('divisions')->latest()->get();
+       
+        return inertia('Dashboard/Users/UsersAdd',[
+            'departments' => $departments,
+        ]);
+    }
+
     public function storeUser(Request $request)
     {   
         
@@ -58,7 +67,7 @@ class UserManagementController extends Controller
         }
         
 
-        return redirect()->back()->with('success', 'Successfully created new user');
+        return redirect()->route('users.show')->with('success', 'Successfully created new user');
     }
 
     public function deleteUser($id)

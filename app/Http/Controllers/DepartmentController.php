@@ -16,7 +16,7 @@ class DepartmentController extends Controller
         return inertia('Dashboard/Department/DepartmentAll', [
                 'departments' => Department::with([
                     'departmentHeads' => function ($query) {
-                    $query->where('role', 'Dep-head');
+                    $query->where('role', 'department head');
                 },
                 'faculty' => function ($query) {
                     $query->where('role', 'faculty');
@@ -41,7 +41,6 @@ class DepartmentController extends Controller
             // Return with an error message
             return redirect()->back()->with('error', 'Error occurred while trying to delete the department. Please try again.');
         }
-
     }
 
     public function addDepartment()

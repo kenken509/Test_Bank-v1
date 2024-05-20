@@ -50,6 +50,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="dep in paginatedData" :key="dep.id" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ dep.name }}
                             </th>
@@ -79,7 +80,7 @@
                             
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
-                                    <button @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete</button>
+                                    <button  @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete </button>
                                     <button @click="showUpdateModal(dep)" type="button" class="btn-success my-2">
                                         Update
                                     </button>
