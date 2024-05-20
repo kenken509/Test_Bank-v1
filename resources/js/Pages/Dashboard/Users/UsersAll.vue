@@ -1,7 +1,7 @@
 <template>
     <DashboardLayout>
-        <div class="flex items-center justify-end border-bot-only py-2 mb-4">
-           
+        <div class="flex items-center justify-between border-bot-only py-2 mb-4">
+            <span class="text-[20px] font-bold text-gray-500">Users </span> 
            <div class="relative">
                <input v-model="searchField" type="text" placeholder="search" class="rounded-md">
                <svg class="absolute top-3 right-2 w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -12,8 +12,8 @@
        <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
         <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
         <div v-if="addNewUserForm.errors.email">{{errorMessage(addNewUserForm.errors.email)}}</div>
-       <div class="flex justify-between items-center">
-            <span class="text-[20px] font-bold text-gray-500">Users </span> 
+       <!-- <div class="flex justify-between items-center">
+            
             <div >
                 
                 <button @click="addUserModalVisible=true" class="btn-primary px-4 flex gap-2 items-center "> 
@@ -23,7 +23,7 @@
                     NEW
                 </button>
             </div>
-        </div>
+        </div> -->
 
         
          <!--TABLE-->
@@ -68,9 +68,9 @@
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                     <button @click="deleteConfirmation(user.id)" class=" btn-warning my-2">Delete</button>
-                                    <button @click="updateUserModal(user.id)" type="button" class="btn-success my-2">
+                                    <Link  :href="route('user.update', {id:user.id})" type="button" class="btn-success my-2">
                                         Update
-                                    </button>
+                                    </Link>
                                 </div>
                             </td>
                         </tr>

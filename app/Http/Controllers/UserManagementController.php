@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -70,6 +71,56 @@ class UserManagementController extends Controller
         return redirect()->route('users.show')->with('success', 'Successfully created new user');
     }
 
+    public function updateUserShow($id)
+    {
+        $departments = Department::with('divisions')->latest()->get();
+        $userToUpdate = User::findOrFail($id);
+        return inertia('Dashboard/Users/UserUpdate',[
+            'userToUpdate' => $userToUpdate,
+            'departments' => $departments,
+        ]);
+    }
+
+    public function updateUserStore(Request $request)
+    {
+        //dd($request);
+        $userToUpdate = User::findOrFail($request->id);
+
+        // Validate the request, ignoring the current user's email
+        $request->validate([
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($userToUpdate->id),
+            ],
+            // Add other validation rules as needed
+        ]);
+
+        try
+        {
+            DB::beginTransaction();
+
+            $userToUpdate->name = $request->name;
+            $userToUpdate->email = $request->email;
+            $userToUpdate->role = $request->role;
+            $userToUpdate->department_id = $request->department;
+            $userToUpdate->division_id = $request->division_id; 
+            $userToUpdate->save();
+
+            DB::commit();
+        }
+        catch(Exception $e)
+        {
+            DB::rollback();
+            Log::error('error creating new user: '.$e->getMessag());
+
+            return redirect()->back()->with('error', 'Failed to update user!');
+        }
+        
+
+        return redirect()->route('users.show')->with('success', 'Updated Successfully.');
+    }
+
     public function deleteUser($id)
     {
         $loggedUserId = Auth::user()->id;
@@ -102,4 +153,6 @@ class UserManagementController extends Controller
         
 
     }
+
+    
 }

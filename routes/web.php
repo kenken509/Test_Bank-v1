@@ -22,6 +22,8 @@ Route::controller(UserManagementController::class)->group(function(){
     Route::get('/test_bank/user/add', 'showAddUser' )->name('user.add');
     Route::post('/test_bank/new-user/store', 'storeUser')->name('user.store');
     Route::delete('test_bank/user/delete/{id}', 'deleteUser')->name('user.delete');
+    Route::get('test_bank/user/update/{id}', 'updateUserShow')->name('user.update');
+    Route::put('test_bank/user/update/store', 'updateUserStore')->name('user.update.store');
 });
 
 Route::controller(DashboardController::class)->group(function(){

@@ -8,7 +8,11 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                 </svg>
             </div> 
-        </div>
+        </div>{{ addNewUserForm.errors.email }}
+        <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
+        <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
+        <div v-if="addNewUserForm.errors.email">{{errorMessage(addNewUserForm.errors.email)}}</div>
+        
         <div>
             <form>
                 <div class=" mb-4 mt-6">
@@ -71,6 +75,7 @@
 import { useForm } from '@inertiajs/vue3';
 import DashboardLayout from '../DashboardLayout.vue';
 import {ref, watch} from 'vue'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 const searchField = ref('')
 
@@ -240,9 +245,40 @@ if(addUserRole.value === 'faculty')
         addNewUserForm.department = addUserDepartment.value.id;
         addNewUserForm.division_id = addUserDivision.value.id;
         addNewUserForm.post(route('user.store'));
-        addUserModalVisible.value = false;
+        
         
     }
 
 }
+
+// sweet alert logic
+function successMessage(message)
+    {
+        Swal.fire({
+            title:'Success',
+            text:message,
+            icon:'success',
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        }).then((result)=>{
+            if(result.isConfirmed)
+            {
+                location.reload();
+                
+            }
+        })
+    }
+    
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message + '!',
+            allowOutsideClick:false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        })
+    }
 </script>
