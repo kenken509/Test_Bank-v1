@@ -22,14 +22,14 @@
                 <span class="text-2xl font-extrabold text-white">Test Bank</span>
             </Link>
             <nav>
-                <Link :href="route('dashboard.show')" class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900 mt-2">
+                <Link v-if="user.role==='admin' || user.role==='co-admin'" :href="route('dashboard.show')" class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900 mt-2">
                     <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
                     </svg>
                     <span>Dashboard</span>
                 </Link>
                 <!-- DEPARTMENT MANAGEMENT -->
-                <div>
+                <div v-if="user.role==='admin' || user.role==='co-admin'">
                     <div class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900" >
                         <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M5.005 10.19a1 1 0 0 1 1 1v.233l5.998 3.464L18 11.423v-.232a1 1 0 1 1 2 0V12a1 1 0 0 1-.5.866l-6.997 4.042a1 1 0 0 1-1 0l-6.998-4.042a1 1 0 0 1-.5-.866v-.81a1 1 0 0 1 1-1ZM5 15.15a1 1 0 0 1 1 1v.232l5.997 3.464 5.998-3.464v-.232a1 1 0 1 1 2 0v.81a1 1 0 0 1-.5.865l-6.998 4.042a1 1 0 0 1-1 0L4.5 17.824a1 1 0 0 1-.5-.866v-.81a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
@@ -64,7 +64,7 @@
                                 Departments
                             </li>
                         </Link>
-                        <Link :href="route('department.add')">
+                        <Link v-if="user.role === 'admin'" :href="route('department.add')">
                             <li @click="toggleBackground('dep2')" :class="{'bg-blue-900':clickedItem == 'dep2'}" class="flex pl-10 items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
                                 <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
@@ -95,7 +95,7 @@
                 <!-- DEPARTMENT MANAGEMENT -->
 
                 <!-- DIVISION MANAGEMENT -->
-                <div>
+                <div v-if="user.role==='admin' || user.role==='co-admin'">
                     <div class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900" >
                         <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M17.5 3a3.5 3.5 0 0 0-3.456 4.06L8.143 9.704a3.5 3.5 0 1 0-.01 4.6l5.91 2.65a3.5 3.5 0 1 0 .863-1.805l-5.94-2.662a3.53 3.53 0 0 0 .002-.961l5.948-2.667A3.5 3.5 0 1 0 17.5 3Z"/>
@@ -120,7 +120,7 @@
                         v-if="showDivMgmtMenu"
                         
                     >
-                        <Link :href="route('division.show')">
+                        <Link  :href="route('division.show')">
                             <li @click="toggleBackground('div1')" :class="{'bg-blue-900':clickedItem == 'div1'}" class="flex pl-10  items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
                             
                                 <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@
                                 Divisions
                             </li>
                         </Link>
-                        <Link :href="route('division.add')">
+                        <Link  v-if="$page.props.user.role === 'admin'" :href="route('division.add')">
                             <li @click="toggleBackground('div2')" :class="{'bg-blue-900':clickedItem == 'div2'}" class="flex pl-10 items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
                                 <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
@@ -147,7 +147,7 @@
 
 
                 <!-- USER MANAGEMENT MENU-->
-                <div>
+                <div v-if="user.role==='admin' || user.role==='co-admin'">
                     <div class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900" >
                         <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z" clip-rule="evenodd"/>
@@ -176,7 +176,7 @@
                                 Users
                             </li>
                         </Link>
-                        <Link :href="route('user.add')">
+                        <Link v-if="user.role === 'admin'" :href="route('user.add')">
                             <li @click="toggleBackground('user2')" :class="{'bg-blue-900':clickedItem === 'user2'}" class="flex pl-10 items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
                                 <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
@@ -190,7 +190,7 @@
                 <!-- USER MANAGEMENT MENU-->
 
                 <!-- SUBJECT CODE MGMT-->
-                <div>
+                <div v-if="user.role==='admin' || user.role==='co-admin'">
                     <div class="flex items-center py-3 pl-3 space-x-2 hover:bg-blue-900" >
                         <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14"/>
@@ -220,7 +220,7 @@
                                     Codes
                                 </li>
                             </Link>
-                            <Link :href="route('subject.codes.add.show')">
+                            <Link v-if="user.role==='admin'" :href="route('subject.codes.add.show')">
                                 <li @click="toggleBackground('subjectCode2')" :class="{'bg-blue-900':clickedItem === 'subjectCode2'}" class="flex pl-10 items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
                                     <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>

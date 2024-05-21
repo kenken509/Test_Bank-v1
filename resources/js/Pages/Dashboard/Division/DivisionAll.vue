@@ -19,7 +19,7 @@
                     <tr>
                         <th scope="col" class="px-6 py-3">Division Name</th>
                         <th scope="col" class="px-6 py-3">Department Name</th>
-                        <th scope="col" class="flex justify-center px-6 py-3">Action</th>
+                        <th  v-if="$page.props.user.role === 'admin'" scope="col" class="flex justify-center px-6 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,7 @@
                         <td class=" align-middle px-6 ">
                             {{ div.department.name }}
                         </td>
-                        <td class="px-6 py-4 text-center ">
+                        <td  v-if="$page.props.user.role === 'admin'" class="px-6 py-4 text-center ">
                                 <div  class="space-x-4">
                                     <button @click="deleteConfirmation(div.id)" class=" btn-warning">Delete</button>
                                     <Link :href="route('division.update.show',{id:div.id})" class="btn-success">

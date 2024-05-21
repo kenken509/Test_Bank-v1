@@ -45,7 +45,7 @@
                             <th scope="col" class="px-6 py-3">Divisions</th>
                             <th scope="col" class="px-6 py-3">Department Head</th>
                             <th scope="col" class="px-6 py-3">Faculties</th>
-                            <th scope="col" class="flex justify-center px-6 py-3">Action</th>
+                            <th v-if="$page.props.user.role === 'admin'" scope="col" class="flex justify-center px-6 py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,7 +78,7 @@
                                 </div>
                             </td>
                             
-                            <td class="px-6 py-4 text-center ">
+                            <td  v-if="$page.props.user.role === 'admin'" class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                     <button  @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete </button>
                                     <Link :href="route('department.update.show',{id:dep.id})" type="button" class="btn-success my-2">
