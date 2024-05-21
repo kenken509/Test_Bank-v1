@@ -1,7 +1,7 @@
 <template>
     <DashboardLayout>
-        <div class="flex items-center justify-end border-bot-only py-2 mb-4">
-           
+        <div class="flex items-center justify-between border-bot-only py-2 mb-4">
+            <span class="text-[20px] font-bold text-gray-500">Departments </span> 
             <div class="relative">
                 <input v-model="searchField" type="text" placeholder="search" class="rounded-md">
                 <svg class="absolute top-3 right-2 w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -18,7 +18,7 @@
         <div v-if="form.errors.departmentName">
             {{ errorMessage(form.errors.departmentName) }}
         </div>
-        <div class="flex justify-between items-center">
+        <!-- <div class="flex justify-between items-center">
             <span class="text-[20px] font-bold text-gray-500">Departments </span> 
             <div >
                 
@@ -30,7 +30,7 @@
                 </button>
             </div>
             
-        </div>
+        </div> -->
         
         <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
         <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
@@ -81,9 +81,9 @@
                             <td class="px-6 py-4 text-center ">
                                 <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                     <button  @click="deleteConfirmation(dep.id)" class=" btn-warning my-2">Delete </button>
-                                    <button @click="showUpdateModal(dep)" type="button" class="btn-success my-2">
+                                    <Link :href="route('department.update.show',{id:dep.id})" type="button" class="btn-success my-2">
                                         Update
-                                    </button>
+                                    </Link>
                                 </div>
                             </td>
                         </tr>
@@ -102,35 +102,35 @@
         <!--PAGINATION CONTROLS-->
         
         <!--add department modal-->
-        <Dialog v-model:visible="visible" modal header="New Department" :style="{ width: '25rem' }">
+        <!-- <Dialog v-model:visible="visible" modal header="New Department" :style="{ width: '25rem' }">
             <div class="border mb-4">
 
             </div>
             <div class="flex flex-col align-items-center gap-3 mb-3">
                 <label for="username" class="font-semibold w-6rem">Department Name</label>
-                <!-- <InputText id="username" class="flex-auto border border-gray-500  " autocomplete="off"  placeholder="Enter department name" /> -->
+                
                 <input v-model="form.departmentName" type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
             </div>
             
             <button @click="submit" type="button" class="w-full btn-primary" >Save</button>
-        </Dialog>
+        </Dialog> -->
         <!--add department modal-->
 
 
 
 
         <!--update department modal-->
-        <Dialog v-model:visible="updateModal" modal header="Update Department" :style="{ width: '25rem' }">
+        <!-- <Dialog v-model:visible="updateModal" modal header="Update Department" :style="{ width: '25rem' }">
             <div class="border mb-4">
             </div>
             
             <div class="flex flex-col align-items-center gap-3 mb-3">
                 <label for="username" class="font-semibold w-6rem">Department Name</label>
-                <!-- <InputText id="username" class="flex-auto border border-gray-500  " autocomplete="off"  placeholder="Enter department name" /> -->
+                
                 <input v-model="updateForm.departmentName" type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
             </div>
             <button @click="update" type="button" class="w-full btn-primary" >Update</button>
-        </Dialog>
+        </Dialog> -->
         <!--update department modal-->
     </DashboardLayout>
 </template>

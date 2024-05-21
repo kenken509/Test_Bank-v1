@@ -37,7 +37,8 @@ Route::controller(DepartmentController::class)->group(function(){
     Route::get('/department/add', 'addDepartment')->name('department.add');
     Route::delete('/test_bank/departments/delete/{id}','destroy')->name('department.delete');
     Route::post('/test_bank/departments/store', 'storeDepartment')->name('department.store');
-    Route::put('/test_bank/departments/update', 'updateDepartment')->name('department.update');
+    Route::get('/test_bank/departments/update/{id}','updateDepartmentShow')->name('department.update.show');
+    Route::put('/test_bank/departments/update/store', 'updateDepartment')->name('department.update');
 });
 
 Route::controller(DivisionController::class)->group(function(){

@@ -1,3 +1,4 @@
+
 <template>
     <DashboardLayout>
         <div class="flex items-center justify-between border-bot-only py-2 mb-4">
@@ -13,11 +14,8 @@
             <label for="username" class="font-semibold w-6rem">Department Name</label>
             <!-- <InputText id="username" class="flex-auto border border-gray-500  " autocomplete="off"  placeholder="Enter department name" /> -->
             <input v-model="form.departmentName" type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
-            <button @click="submitConfirmation" type="button" class="w-full btn-primary" >Save</button>
+            <button @click="updateConfirmation" type="button" class="w-full btn-primary" >Save</button>
         </div>
-
-        
-            
     </DashboardLayout>
 </template>
 
@@ -27,15 +25,18 @@ import DashboardLayout from '../DashboardLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 
-
+const data = defineProps({
+    department:Object,
+})
 const form = useForm({
-    departmentName:''
+    departmentId:data.department.id,
+    departmentName:data.department.name,
 })
 
-    const submitConfirmation = ()=> 
+    const updateConfirmation = ()=> 
     { 
         Swal.fire({
-            title: "Submit Confirmation",
+            title: "Update Confirmation",
             text: "Are you sure?",
             icon: "warning",
             showCancelButton: true,
@@ -47,7 +48,7 @@ const form = useForm({
             }).then((result) => {
                 if(result.isConfirmed)
                 {
-                    form.post(route('department.store'));
+                    form.put(route('department.update'));
                 }
 
                 if(result.isDismissed)
@@ -76,3 +77,5 @@ const form = useForm({
     }
 const toggleModal = ref(false)
 </script>
+
+

@@ -6,6 +6,7 @@ use Log;
 use Exception;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
 class DepartmentController extends Controller
@@ -65,7 +66,7 @@ class DepartmentController extends Controller
             //throw new \Exception('Simulated error');
 
             DB::commit();
-            return redirect()->back()->with('success', 'Successfully created new department.');
+            return redirect()->route('departments.show')->with('success', 'Successfully created new department.');
         }catch(\Exception $e)
         {
             DB::rollback();
@@ -78,10 +79,22 @@ class DepartmentController extends Controller
         
     }
 
+    public function updateDepartmentShow($id)
+    {
+        $department = Department::findOrFail($id);
+        
+        return inertia('Dashboard/Department/DepartmentUpdate',[
+            'department' => $department, 
+        ]);
+    }
     public function updateDepartment(Request $request)
     {
+        //dd($request->departmentId);
         $request->validate([
-            'departmentName' => 'required|unique:departments,name',
+            'departmentName' => [
+                'required',
+                Rule::unique('departments', 'name')->ignore($request->departmentId),
+            ],
         ]);
 
         try{
@@ -92,15 +105,16 @@ class DepartmentController extends Controller
             $depToUpdate->name = $request->departmentName;
             $depToUpdate->save();
 
+            //throw new \Exception('simulated error'); 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Updated Successfully.');
+            return redirect()->route('departments.show')->with('success', 'Updated Successfully.');
         }catch(\Exception $e)
         {
             DB::rollback();
             Log::error('Failed to update department:  '.$e->getMessage());
 
-            return redirect()->back()->with('error', 'Failed to update department');
+            return redirect()->back()->with('error', 'Failed to update department. ');
         }
         
     }

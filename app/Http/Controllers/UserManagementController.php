@@ -95,7 +95,7 @@ class UserManagementController extends Controller
             ],
             // Add other validation rules as needed
         ]);
-
+ 
         try
         {
             DB::beginTransaction();
