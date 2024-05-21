@@ -23,4 +23,9 @@ class Department extends Model
     {
         return $this->hasMany(Division::class);
     }
+
+    public function subjectCodes()
+    {
+        return $this->hasMany(SubjectCode::class);
+    }
 }

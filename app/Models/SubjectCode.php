@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class SubjectCode extends Model
 {
     use HasFactory;
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
 }

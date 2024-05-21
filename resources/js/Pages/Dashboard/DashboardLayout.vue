@@ -1,12 +1,12 @@
 <template>
-    <div class="flex min-h-screen h-full">
+    <div class="flex min-h-screen ">
         <!-- sidebar -->
         <div 
             class="
                 bg-blue-950 
                 text-blue-100 
                 w-64 
-                absolute 
+                fixed 
                 inset-y-0 
                 left-0 
                 transform 
@@ -220,7 +220,7 @@
                                     Codes
                                 </li>
                             </Link>
-                            <Link >
+                            <Link :href="route('subject.codes.add.show')">
                                 <li @click="toggleBackground('subjectCode2')" :class="{'bg-blue-900':clickedItem === 'subjectCode2'}" class="flex pl-10 items-center gap-2 py-2 hover:bg-blue-900 hover:cursor-pointer">
                                     <svg class="w-6 h-6 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
@@ -391,7 +391,7 @@ const showSubjectCodesMenu = ref(false)
 const subjectCodesToggleMenu = () =>
 {
     showSubjectCodesMenu.value = !showSubjectCodesMenu.value
-    clickedItem = 0
+    clickedItem.value = 0
 }
 
 const toggleBackground = (index)=> {

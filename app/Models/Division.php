@@ -20,4 +20,9 @@ class Division extends Model
         return $this->hasMany(User::class);
     }
     
+
+    public function divSubjectCodes()
+    {
+        return $this->hasMany(SubJectCode::class);
+    }
 }
