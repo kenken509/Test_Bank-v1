@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\SubjectCodeController;
 use App\Http\Controllers\UserManagementController;
 
 Route::get('/', function () {
@@ -48,4 +49,8 @@ Route::controller(DivisionController::class)->group(function(){
     Route::post('/test_bank/divisions/store', 'storeDivision')->name('division.store');
     Route::get('/test_bank/divisions/update/{id}', 'updateShow')->name('division.update.show');
     Route::put('/test_bank/divisions/update/store', 'storeUpdate')->name('division.update.store');
+});
+
+Route::controller(SubjectCodeController::class)->group(function(){
+    Route::get('/test_bank/subject_codes', 'showSubjectCodes')->name('subject.codes.show');
 });

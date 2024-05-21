@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             DivisionSeeder::class,
             AdminSeeder::class,
+            SubjectCodeSeeder::class,
             // SubjectSeeder::class,
             // InstructorSeeder::class,
             // SectionSeeder::class,
