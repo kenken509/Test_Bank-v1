@@ -57,4 +57,5 @@ Route::controller(SubjectCodeController::class)->group(function(){
     Route::get('/test_bank/subject_codes/add', 'showAddSubjectCode')->name('subject.codes.add.show');
     Route::post('/test_bank/subject_codes/store', 'store')->name('subject.codes.store');
     Route::get('/test_bank/subject_codes/update/{id}', 'updateShow')->name('subject.codes.update.show');
+    Route::put('/test_bank/subject_codes/update/store', 'update')->name('subject.codes.update');
 });

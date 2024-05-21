@@ -40,7 +40,7 @@
                 </textarea> 
                
                 
-                <button   type="submit" class="btn-primary " :disabled="form.processing">Save</button>
+                <button   type="submit" class="btn-primary " :disabled="form.processing">Update</button>
             </div>
         </form>
     </div>
@@ -74,6 +74,7 @@ const data = defineProps({
 
 
 const form = useForm({
+    id:data.codeToUpdate.id,
     name:data.codeToUpdate.name,
     description:data.codeToUpdate.description,
     department_id:'',
@@ -140,7 +141,7 @@ const submitConfirmation = ()=>
                     form.department_id = selectedDepartment.value.id
                     form.division_id = selectedDivision.value.id
 
-                    form.post(route('subject.codes.store'));
+                    form.put(route('subject.codes.update'));
                     
                 }
 

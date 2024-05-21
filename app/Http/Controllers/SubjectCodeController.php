@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Department;
 use App\Models\SubjectCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SubjectCodeController extends Controller
 {
@@ -36,15 +38,28 @@ class SubjectCodeController extends Controller
         ],[
             'name' => 'Existing code detected, please try different code.'
         ]);
-        $newSubjectCode = new SubjectCode();
 
-        $newSubjectCode->name = $request->name;
-        $newSubjectCode->description = $request->description;
-        $newSubjectCode->department_id = $request->department_id;
-        $newSubjectCode->division_id = $request->division_id;
-        $newSubjectCode->save();
+        try 
+        {
+            DB::beginTransaction();
+            $newSubjectCode = new SubjectCode();
 
-        return redirect()->route('subject.codes.show')->with('success', 'Successfully added new subject code.');
+            $newSubjectCode->name = $request->name;
+            $newSubjectCode->description = $request->description;
+            $newSubjectCode->department_id = $request->department_id;
+            $newSubjectCode->division_id = $request->division_id;
+            $newSubjectCode->save();
+            
+            DB:commit();
+            return redirect()->route('subject.codes.show')->with('success', 'Successfully added new subject code.');
+        }catch(\Exception $e)
+        {
+            DB::rollback();
+            Log::error('error saving new code: '.$e.getMessag());
+
+            return redirect()->back()->with('error', 'Failed to save new code');
+        }
+       
 
     }
 
@@ -59,7 +74,33 @@ class SubjectCodeController extends Controller
         ]);
     }   
 
+    public function update(Request $request)
+    {
+        
+        try{
+            DB::beginTransaction();
 
+            $codeToUpdate = SubjectCode::findOrFail($request->id);
+
+            $codeToUpdate->name = $request->name;
+            $codeToUpdate->description = $request->description;
+            $codeToUpdate->department_id = $request->department_id;
+            $codeToUpdate->division_id = $request->division_id;
+            $codeToUpdate->save();
+            
+
+
+            DB::commit();
+            return redirect()->route('subject.codes.show')->with('success', 'Successfully updated subject code');
+        }catch(Exception $e){
+            DB::rollback();
+            
+            Log::error('error updating code: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to update subject code.');
+        }
+        
+    }
 
     public function destroy($id)
     {
