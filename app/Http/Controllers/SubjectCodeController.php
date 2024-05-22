@@ -50,7 +50,7 @@ class SubjectCodeController extends Controller
             $newSubjectCode->division_id = $request->division_id;
             $newSubjectCode->save();
             
-            DB:commit();
+            DB::commit();
             return redirect()->route('subject.codes.show')->with('success', 'Successfully added new subject code.');
         }catch(\Exception $e)
         {
@@ -73,6 +73,7 @@ class SubjectCodeController extends Controller
             'departments'   => $departments, 
         ]);
     }   
+    
 
     public function update(Request $request)
     {
