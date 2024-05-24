@@ -11,118 +11,147 @@
         </div>
         <!-- current codes:  {{ filteredQuestionByCode }} || hasFilteredTerm = {{ hasFilteredTerm }}
         <span class="text-red-700">{{ getDisplayedQuestions() }}</span> -->
-
-         <div class="flex items-center justify-between">
-            <select  v-model="selectedSubjectCode" class="border-blue-500 rounded-md ">
-                <option value="" selected hidden>
-                    Subject Code
-                </option>sdf
-                <option v-for="code in data.subjectCodes" :value="code">
-                    {{ code.name }}
-                </option>
-            </select>
-           
-            <div class="flex gap-4 " > 
-                
-                <div class="flex items-center gap-4 hover:cursor-pointer  " :class="{'pointer-events-none ': allTermsSelected}">
-                    <input v-model="prelim" type="checkbox" id="prelim" class="hover:cursor-pointer "  />
-                    <label for="prelim" class="hover:cursor-pointer" >Prelim</label>
-                </div>
-                <div class="flex items-center gap-4 hover:cursor-pointer" :class="{'pointer-events-none ': allTermsSelected}">
-                    <input v-model="midTerm" type="checkbox" id="midterm" class="hover:cursor-pointer" />
-                    <label for="midterm" class="hover:cursor-pointer">Midterm</label>
-                </div>
-                <div class="flex items-center gap-4 hover:cursor-pointer" :class="{'pointer-events-none ': allTermsSelected}">
-                    <input v-model="prefinal" type="checkbox" id="prefinal" class="hover:cursor-pointer" />
-                    <label for="prefinal" class="hover:cursor-pointer">Prefinal</label>
-                </div>
-                <div class="flex items-center gap-4 hover:cursor-pointer" :class="{'pointer-events-none ': allTermsSelected}">
-                    <input v-model="final" type="checkbox" id="final" class="hover:cursor-pointer" />
-                    <label for="final" class="hover:cursor-pointer">Final</label>
-                </div>
-               
-                
-                <div class="flex items-center gap-4 hover:cursor-pointer">
-                    <input v-model="allTerm" type="checkbox" id="final" class="hover:cursor-pointer" />
-                    <label for="final" class="hover:cursor-pointer">All</label>
-                </div> 
-            </div>
-            <div class="flex items-center gap-2">
-                <span>
-                    Total Count: 
-                </span>
-                <span>
-                    {{ questionTotalCoumt }}
-                </span>
-            </div>
-        </div>
-        
-        
-        
-        <!--TABLE--> 
-        <div>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-200 uppercase bg-blue-900 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">No.</th>
-                            <th scope="col" class="px-6 py-3">ID</th>
-                            <th scope="col" class="px-6 py-3">Question</th>
-                            <th scope="col" class="px-6 py-3">Term</th>
-                            <th scope="col" class="px-6 py-3">Type</th>
-                            <th scope="col" class="px-6 py-3">Author</th>
-                            <th scope="col" class="px-6 py-3">Date</th>
-                            
-                           
-
-                            
-                            <th  v-if="isAdmin" scope="col" class="flex justify-center px-6 py-3">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            
+            <div class="flex  flex-col ">
+                <div class="grid grid-cols-10 items-center my-2">
+                    <div class="col-span-1">
+                        <label>Subject Code: </label>
+                    </div>
+                    
+                    <div class="flex  col-span-8 gap-8 ">
                         
-                        <tr v-for="(question ,index ) in getDisplayedQuestions() " :key="index" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            {{ getQuestionTotalCount(filteredQuestionByCode.length) }} 
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ index+1 }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                               {{ question.id }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                               {{ question.question }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                               {{ question.term }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ question.type }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ question.author.name }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <select  v-model="selectedSubjectCode" class="border-blue-500 rounded-md ">
+                            <option value="" selected hidden>
+                                Subject Code
+                            </option>sdf
+                            <option v-for="code in data.subjectCodes" :value="code">
+                                {{ code.name }}
+                            </option>
+                        </select>
+                        <div class="flex   gap-3" > 
+                            <span class="flex items-center"> Term: </span>   
+                            <div class="flex items-center gap-4 hover:cursor-pointer  " :class="{'pointer-events-none ': allTermsSelected}">
+                                <input v-model="prelim" type="checkbox" id="prelim" class="hover:cursor-pointer "  />
+                                <label for="prelim" class="hover:cursor-pointer" >Prelim</label>
+                            </div>
+                            <div class="flex items-center gap-4 hover:cursor-pointer" :class="{'pointer-events-none ': allTermsSelected}">
+                                <input v-model="midTerm" type="checkbox" id="midterm" class="hover:cursor-pointer" />
+                                <label for="midterm" class="hover:cursor-pointer">Midterm</label>
+                            </div>
+                            <div class="flex items-center gap-4 hover:cursor-pointer" :class="{'pointer-events-none ': allTermsSelected}">
+                                <input v-model="prefinal" type="checkbox" id="prefinal" class="hover:cursor-pointer" />
+                                <label for="prefinal" class="hover:cursor-pointer">Prefinal</label>
+                            </div>
+                            <div class="flex items-center gap-4 hover:cursor-pointer" :class="{'pointer-events-none ': allTermsSelected}">
+                                <input v-model="final" type="checkbox" id="final" class="hover:cursor-pointer" />
+                                <label for="final" class="hover:cursor-pointer">Final</label>
+                            </div>
+                        
                             
-                            </th>
-                           
-                          
-                            <td  v-if="$page.props.user.role === 'admin'" class="px-6 py-4 text-center ">
-                                <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
-                                    <button @click="showQuestionInfoModal(question)" class="btn-primary p-2">Info</button>
-                                    <button  @click="deleteConfirmation(question.id)" class=" btn-warning my-2">Delete </button>
-                                    <Link :href="route('subject.codes.update.show',{id:question.id})" type="button" class="btn-success my-2">
-                                        Update
-                                    </Link>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            <div class="flex items-center gap-4 hover:cursor-pointer">
+                                <input v-model="allTerm" type="checkbox" id="final" class="hover:cursor-pointer" />
+                                <label for="final" class="hover:cursor-pointer">All</label>
+                            </div> 
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="flex items-center gap-2">
+                        <span>
+                            Total Count: 
+                        </span>
+                        <span >
+                            {{ questionTotalCoumt }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class=" grid grid-cols-10 ">
+                    <div class="col-span-1">
+                        <span class="">
+                            Description : 
+                        </span>
+                    </div>
+                    
+                    <div class="col-span-9 w-full">
+                        <input type="text" :value="selectedSubjectCode.description" class="w-full bg-gray-500" disabled />
+                        <span class="col-span-1">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                
             </div>
-        </div>
+            
+            
+            
+            <!--TABLE--> 
+            <div>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-200 uppercase bg-blue-900 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">No.</th>
+                                <th scope="col" class="px-6 py-3">ID</th>
+                                <th scope="col" class="px-6 py-3">Question</th>
+                                <th scope="col" class="px-6 py-3">Term</th>
+                                <th scope="col" class="px-6 py-3">Type</th>
+                                <th scope="col" class="px-6 py-3">Author</th>
+                                <th scope="col" class="px-6 py-3">Date</th>
+                                
+                            
 
-       
-        <!--TABLE-->
+                                
+                                <th  v-if="isAdmin" scope="col" class="flex justify-center px-6 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr v-for="(question ,index ) in getDisplayedQuestions() " :key="index" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                {{ getQuestionTotalCount(filteredQuestionByCode.length) }} 
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ index+1 }}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ question.id }}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ question.question }}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ question.term }}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ question.type }}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ question.author.name }}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                
+                                </th>
+                            
+                            
+                                <td  v-if="$page.props.user.role === 'admin'" class="px-6 py-4 text-center ">
+                                    <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
+                                        <button @click="showQuestionInfoModal(question)" class="btn-primary p-2">Info</button>
+                                        <button  @click="deleteConfirmation(question.id)" class=" btn-warning my-2">Delete </button>
+                                        <Link :href="route('subject.codes.update.show',{id:question.id})" type="button" class="btn-success my-2">
+                                            Update
+                                        </Link>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        
+            <!--TABLE-->
+         
+        
 
         <!--Question Info Modal-->
         <Dialog v-model:visible="infoModalOpen" modal  :style="{ width: '80rem' }">
