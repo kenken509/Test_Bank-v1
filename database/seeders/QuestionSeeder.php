@@ -32,5 +32,16 @@ class QuestionSeeder extends Seeder
             'author_id'         => '1',
             'created_at'        => now(),
         ]);
+
+        
+        DB::table('questions')->insert([
+            'question'          => 'What does CSS stand for?',
+            'type'              => 'text',
+            'term'              => 'mid-term',
+            'answer'            => 'Cascading Style Sheet',
+            'subject_code_id'   => '1',
+            'author_id'         => '1',
+            'created_at'        => now(),
+        ]);
     }
 }

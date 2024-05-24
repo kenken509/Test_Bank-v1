@@ -249,11 +249,11 @@ const myArray = [
     },
     {
         name: 'myMidterm',
-        term: 'midterm',
+        term: 'mid-term',
     },
     {
         name: 'myPrelim',
-        term: 'prefinal',
+        term: 'pre-final',
     },
     {
         name: 'myFinal',
@@ -276,8 +276,8 @@ function updateFilteredArray() {
             filteredQuestionByTerm.value = filteredQuestionByCode.value.filter(item => {
                 return (
                     (prelim.value && item.term === 'prelim') ||
-                    (midTerm.value && item.term === 'midterm') ||
-                    (prefinal.value && item.term === 'prefinal') ||
+                    (midTerm.value && item.term === 'mid-term') ||
+                    (prefinal.value && item.term === 'pre-final') ||
                     (final.value && item.term === 'final')
                 );
             });
