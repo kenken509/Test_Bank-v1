@@ -13,22 +13,22 @@
         <span class="text-red-700">{{ getDisplayedQuestions() }}</span> -->
             
             <div class="flex  flex-col ">
-                <div class="grid grid-cols-10 items-center my-2">
+                <div class="grid grid-cols-10 items-center my-2 ">
                     <div class="col-span-1">
                         <label>Subject Code: </label>
                     </div>
                     
-                    <div class="flex  col-span-8 gap-8 ">
+                    <div class="flex  col-span-10 lg:col-span-8 gap-8 ">
                         
                         <select  v-model="selectedSubjectCode" class="border-blue-500 rounded-md ">
                             <option value="" selected hidden>
                                 Subject Code
-                            </option>sdf
+                            </option>
                             <option v-for="code in data.subjectCodes" :value="code">
                                 {{ code.name }}
                             </option>
                         </select>
-                        <div class="flex   gap-3" > 
+                        <div class="flex flex-col lg:flex-row  gap-3" > 
                             <span class="flex items-center"> Term: </span>   
                             <div class="flex items-center gap-4 hover:cursor-pointer  " :class="{'pointer-events-none ': allTermsSelected}">
                                 <input v-model="prelim" type="checkbox" id="prelim" class="hover:cursor-pointer "  />
@@ -46,7 +46,7 @@
                                 <input v-model="final" type="checkbox" id="final" class="hover:cursor-pointer" />
                                 <label for="final" class="hover:cursor-pointer">Final</label>
                             </div>
-                        
+                            
                             
                             <div class="flex items-center gap-4 hover:cursor-pointer">
                                 <input v-model="allTerm" type="checkbox" id="final" class="hover:cursor-pointer" />
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 
-                <div class=" grid grid-cols-10 ">
+                <div class=" grid grid-cols-10 items-center mb-2">
                     <div class="col-span-1">
                         <span class="">
                             Description : 
@@ -74,7 +74,7 @@
                     </div>
                     
                     <div class="col-span-9 w-full">
-                        <input type="text" :value="selectedSubjectCode.description" class="w-full bg-gray-500" disabled />
+                        <input type="text" :value="selectedSubjectCode.description" class="w-full bg-gray-100 rounded-md" disabled />
                         <span class="col-span-1">
                             
                         </span>

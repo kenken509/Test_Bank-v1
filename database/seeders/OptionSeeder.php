@@ -54,5 +54,27 @@ class OptionSeeder extends Seeder
             'option' => 'Gary Boomer',
             'question_id' => '2'
         ]);
+
+        // question 3
+        DB::table('options')->insert([
+            'option' => 'Cascading Style Sheet',
+            'question_id' => '3'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'Creative Style Sheet',
+            'question_id' => '3'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'Colorful Style Sheet',
+            'question_id' => '3'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'Computer Style Sheet',
+            'question_id' => '3'
+        ]);
+
     }
 }
