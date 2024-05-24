@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
             $table->text('question');
             $table->enum('type',['text','image']);
+            $table->enum('term',['prelim','mid-term','pre-final','final']);
             $table->string('answer');
-            $table->unsignedBigInteger('department_id')->nullable();
-            $table->unsignedBigInteger('division_id')->nullable();
+            $table->unsignedBigInteger('subject_code_id')->nullable();
+            
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->timestamps();
 
 
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('division_id')->references('id')->on('divisions')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('subject_code_id')->references('id')->on('subject_codes')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('author_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
         });

@@ -38,5 +38,12 @@ class AdminSeeder extends Seeder
             'department_id' => '2',
             'division_id'   => '1',
         ]);
+
+        \App\Models\User::factory(1)->create([
+            'name'          => 'Calix',
+            'email'         => 'csd@gmail.com',
+            'role'          => 'faculty',
+            'department_id' => '1',
+        ]);
     }
 }

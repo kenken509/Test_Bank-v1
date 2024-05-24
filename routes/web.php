@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SubjectCodeController;
@@ -58,4 +59,8 @@ Route::controller(SubjectCodeController::class)->group(function(){
     Route::post('/test_bank/subject_codes/store', 'store')->name('subject.codes.store');
     Route::get('/test_bank/subject_codes/update/{id}', 'updateShow')->name('subject.codes.update.show');
     Route::put('/test_bank/subject_codes/update/store', 'update')->name('subject.codes.update');
+});
+
+Route::controller(QuestionController::class)->group(function(){
+    Route::get('/test_bank/questions', 'showQuestions')->name('questions.show');
 });

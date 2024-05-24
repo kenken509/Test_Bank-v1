@@ -33,5 +33,26 @@ class OptionSeeder extends Seeder
             'option' => 'Katherine Johnson',
             'question_id' => '1'
         ]);
+
+        // question 2
+        DB::table('options')->insert([
+            'option' => 'Luca Pacioli',
+            'question_id' => '2'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'Arthur Blank',
+            'question_id' => '2'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'Bob Newhart',
+            'question_id' => '2'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'Gary Boomer',
+            'question_id' => '2'
+        ]);
     }
 }
