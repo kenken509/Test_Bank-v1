@@ -49,8 +49,8 @@
                             
                             
                             <div class="flex items-center gap-4 hover:cursor-pointer">
-                                <input v-model="allTerm" type="checkbox" id="final" class="hover:cursor-pointer" />
-                                <label for="final" class="hover:cursor-pointer">All</label>
+                                <input v-model="allTerm" type="checkbox" id="all" class="hover:cursor-pointer" />
+                                <label for="all" class="hover:cursor-pointer">All</label>
                             </div> 
                         </div>
                     </div>
@@ -155,17 +155,68 @@
 
         <!--Question Info Modal-->
         <Dialog v-model:visible="infoModalOpen" modal  :style="{ width: '80rem' }">
-            <div class="border mb-4">
-                
+            <!--header-->
+            <div class="border  flex justify-between items-center bg-blue-900 p-4 pl-2 pr-4 rounded-tl-md rounded-tr-md">
+                <div class="flex items-center gap-2">
+                    <img :src="logoUrl" alt="error" class="w-20 h-20">
+                    <span class="text-gray-100 text-xl">Question information</span>
+                </div>
+                <div class="flex  flex-col  ">
+                    <div class="flex justify-end text-[30px] text-gray-100">
+                        {{ user.name }}
+                    </div>
+                    <div class="flex justify-end text-gray-100">
+                        {{ user.role }}
+                    </div>
+                </div>
             </div>
-            Question Info : {{ viewQuestionInfo }}
+            <!--header-->
+
+            <!--BODY-->
+            <div class=" border-t-0 rounded-bl-md rounded-br-md p-2">
+                <div>
+                    <span class="text-lg font-semibold"> Subject Code : </span>
+                    <span>{{ selectedSubjectCode.name }}</span> 
+                </div>
+                <div>
+                    <span class="text-lg font-semibold"> Description : </span>
+                    <span>{{ selectedSubjectCode.description }}</span> 
+                </div>
+                <div class="w-full flex gap-2 ">
+                    <div class="w-[60%] bg-red-400">
+                        <textarea class="w-full h-full" cols="50" rows="10" :value="viewQuestionInfo.question">
+                        </textarea>
+                    </div>
+                    {{ viewQuestionInfo.options[3].isCorrect }}
+                    <div class="border w-[40%] p-2">
+                        <div class="flex items-center gap-2 mb-2" >
+                            <input type="radio" :name="`option`" :id="`option_a`" checked="{{viewQuestionInfo.options[0].isCorrect}}" />
+                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[0].option"> </textarea>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2" >
+                            <input type="radio" :name="`option`" :id="`option_b`" checked="{{viewQuestionInfo.options[1].isCorrect}}"/>
+                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[1].option"> </textarea>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2"  >
+                            <input type="radio" :name="`option`" :id="`option_c`" :checked="viewQuestionInfo.options[2].isCorrect"/>
+                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[2].option"> </textarea>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2" >
+                            <input type="radio" :name="`option`" :id="`option_d`" :checked="viewQuestionInfo.options[3].isCorrect"/>
+                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[3].option"> </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--BODY-->
+            Question Info : {{ viewQuestionInfo.answer }}
             <div class="flex flex-col align-items-center gap-3 mb-3">
                 <label for="username" class="font-semibold w-6rem"></label>
                 
-                <input  type="text" placeholder="Enter department name" class="flex-auto border border-gray-500 rounded " required/>
+               
             </div>
             
-            <button @click="submit" type="button" class="w-full btn-primary" >Save</button>
+           
         </Dialog>
 
         <!--Question Info Modal-->
@@ -177,7 +228,10 @@ import DashboardLayout from '../DashboardLayout.vue';
 import {ref,watch,onMounted} from 'vue'
 import { Link,usePage } from '@inertiajs/vue3';
 
+
+const logoUrl = ref('/storage/Images/ncstLogo.png');
 const searchField = ref('')
+
 
 
 const data = defineProps({

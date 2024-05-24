@@ -16,7 +16,6 @@ return new class extends Migration
             $table->text('question');
             $table->enum('type',['text','image']);
             $table->enum('term',['prelim','mid-term','pre-final','final']);
-            $table->text('answer');
             $table->unsignedBigInteger('subject_code_id')->nullable();
             
             $table->unsignedBigInteger('author_id');

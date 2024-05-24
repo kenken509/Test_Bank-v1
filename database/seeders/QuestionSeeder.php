@@ -17,7 +17,7 @@ class QuestionSeeder extends Seeder
             'question'          => 'Who is known as the first woman programmer?',
             'type'              => 'text',
             'term'              => 'prelim',
-            'answer'            => 'Ada Lovelace',
+            
             'subject_code_id'   => '1',
             'author_id'         => '1',
             'created_at'        => now(),
@@ -27,7 +27,7 @@ class QuestionSeeder extends Seeder
             'question'          => 'Who is the father of accounting?',
             'type'              => 'text',
             'term'              => 'prelim',
-            'answer'            => 'Luca Pacioli',
+            
             'subject_code_id'   => '5',
             'author_id'         => '1',
             'created_at'        => now(),
@@ -38,7 +38,7 @@ class QuestionSeeder extends Seeder
             'question'          => 'What does CSS stand for?',
             'type'              => 'text',
             'term'              => 'mid-term',
-            'answer'            => 'Cascading Style Sheet',
+            
             'subject_code_id'   => '1',
             'author_id'         => '1',
             'created_at'        => now(),
