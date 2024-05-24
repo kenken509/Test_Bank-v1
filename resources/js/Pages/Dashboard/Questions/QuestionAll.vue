@@ -9,8 +9,8 @@
                 </svg>
             </div> 
         </div>
-        current codes:  {{ selectedSubjectCode.name }}
-        <span class="text-red-700">{{ subjectCodeQuestions }}</span>
+        <!-- current codes:  {{ filteredQuestionByCode }} || hasFilteredTerm = {{ hasFilteredTerm }}
+        <span class="text-red-700">{{ getDisplayedQuestions() }}</span> -->
 
          <div class="flex items-center justify-between">
             <select  v-model="selectedSubjectCode" class="border-blue-500 rounded-md ">
@@ -81,8 +81,8 @@
                     </thead>
                     <tbody>
                         
-                        <tr v-for="(question ,index ) in subjectCodeQuestions" :key="index" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            {{ getQuestionTotalCount(subjectCodeQuestions.length) }} 
+                        <tr v-for="(question ,index ) in getDisplayedQuestions() " :key="index" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            {{ getQuestionTotalCount(filteredQuestionByCode.length) }} 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ index+1 }}
                             </th>
@@ -164,8 +164,8 @@ onMounted(()=>{
     }
 
     selectedSubjectCode.value = data.subjectCodes[0]
-    subjectCodeQuestions.value = selectedSubjectCode.value.questions
-    console.log(subjectCodeQuestions)
+    filteredQuestionByCode.value = selectedSubjectCode.value.questions
+    
 })
 
 const correctAnswer = ref()
@@ -199,10 +199,14 @@ const final = ref(false);
 
 const selectedSubjectCode = ref('');
 const currentSubjectCodes = ref('')
-const subjectCodeQuestions = ref([]); 
+const filteredQuestionByCode = ref([]); 
+// Define computed property to hold filtered array
+const filteredQuestionByTerm = ref([]);
+const hasFilteredTerm = ref(false);
+
 watch(selectedSubjectCode, (val)=>{
-    console.log(subjectCodeQuestions.value)
-    subjectCodeQuestions.value = val.questions
+    
+    filteredQuestionByCode.value = val.questions
     
     questionTotalCoumt.value = 0
 
@@ -235,19 +239,30 @@ watch(final, updateFilteredArray);
 
 // Function to filter myArray based on checkbox values
 function updateFilteredArray() {
+        
+        if(prelim.value || midTerm.value || prefinal.value || final.value)
+        {
+            
+
+            filteredQuestionByTerm.value = filteredQuestionByCode.value.filter(item => {
+                return (
+                    (prelim.value && item.term === 'prelim') ||
+                    (midTerm.value && item.term === 'midterm') ||
+                    (prefinal.value && item.term === 'prefinal') ||
+                    (final.value && item.term === 'final')
+                );
+            });
+
+            hasFilteredTerm.value = true; 
+        }
+        else
+        {
+            hasFilteredTerm.value = false;
+            filteredQuestionByTerm.value = [];
+        }
     
-    subjectCodeQuestions.value = subjectCodeQuestions.value.filter(item => {
-        return (
-            (prelim.value && item.term === 'prelim') ||
-            (midTerm.value && item.term === 'midterm') ||
-            (prefinal.value && item.term === 'prefinal') ||
-            (final.value && item.term === 'final')
-        );
-    });
 }
 
-// Define computed property to hold filtered array
-const filteredArray = ref([]);
 
 // Initial call to updateFilteredArray
 updateFilteredArray();
@@ -256,6 +271,7 @@ updateFilteredArray();
 const allTerm = ref(false);
 const allTermsSelected = ref(false)
 watch(allTerm,(val)=>{
+        
         prelim.value = val
         midTerm.value = val
         prefinal.value = val
@@ -265,6 +281,10 @@ watch(allTerm,(val)=>{
 const questionTotalCoumt = ref('')
 function getQuestionTotalCount(count){
     questionTotalCoumt.value = count
+}
+
+function getDisplayedQuestions(){
+    return hasFilteredTerm.value ? filteredQuestionByTerm.value : filteredQuestionByCode.value
 }
 
 </script>
