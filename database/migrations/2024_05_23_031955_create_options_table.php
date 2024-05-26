@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id();
             $table->string('option');
-            $table->enum('isCorrect',['1','0']);
+            $table->enum('isCorrect',['true','false']);
             $table->unsignedBigInteger('question_id');
             $table->timestamps();
 

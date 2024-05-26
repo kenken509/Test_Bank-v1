@@ -187,24 +187,26 @@
                         <textarea class="w-full h-full" cols="50" rows="10" :value="viewQuestionInfo.question">
                         </textarea>
                     </div>
-                    {{ viewQuestionInfo.options[3].isCorrect }}
+                    {{ getCorrectAnswer(viewQuestionInfo.options) }} 
+                    
                     <div class="border w-[40%] p-2">
-                        <div class="flex items-center gap-2 mb-2" >
-                            <input type="radio" :name="`option`" :id="`option_a`" checked="{{viewQuestionInfo.options[0].isCorrect}}" />
-                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[0].option"> </textarea>
+                        <div class="flex items-center gap-2 mb-2" v-for="option in viewQuestionInfo.options" :key="option.id">
+                            
+                            <input type="radio" :name="`options`" :id="`option_${option.id}`" :value="option.id" v-model="correctAnswer" />
+                            <textarea cols="30" rows="2" class="w-full" :value="option.option">  </textarea>
                         </div>
-                        <div class="flex items-center gap-2 mb-2" >
-                            <input type="radio" :name="`option`" :id="`option_b`" checked="{{viewQuestionInfo.options[1].isCorrect}}"/>
+                        <!-- <div class="flex items-center gap-2 mb-2" >
+                            <input type="radio" :name="`option`" :id="`option_b`" v-model="viewQuestionInfo.options[0].isCorrect"/>
                             <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[1].option"> </textarea>
                         </div>
                         <div class="flex items-center gap-2 mb-2"  >
-                            <input type="radio" :name="`option`" :id="`option_c`" :checked="viewQuestionInfo.options[2].isCorrect"/>
+                            <input type="radio" :name="`option`" :id="`option_c`" v-model="viewQuestionInfo.options[0].isCorrect"/>
                             <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[2].option"> </textarea>
                         </div>
                         <div class="flex items-center gap-2 mb-2" >
-                            <input type="radio" :name="`option`" :id="`option_d`" :checked="viewQuestionInfo.options[3].isCorrect"/>
+                            <input type="radio" :name="`option`" :id="`option_d`" v-model="viewQuestionInfo.options[0].isCorrect"/>
                             <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[3].option"> </textarea>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -229,6 +231,21 @@ import {ref,watch,onMounted} from 'vue'
 import { Link,usePage } from '@inertiajs/vue3';
 
 
+function getCorrectAnswer(options)
+{
+    options.forEach((option) => {
+        if (option.isCorrect === 'true') {
+            correctAnswer.value = option.id;
+        }
+    });
+    // options.foreach((option)=>{
+    //     if(option.isCorrect)
+    //     {
+    //         correctAnswer.value = option.id
+    //     }
+    // })
+}
+const correctAnswer= ref('')
 const logoUrl = ref('/storage/Images/ncstLogo.png');
 const searchField = ref('')
 
@@ -251,7 +268,7 @@ onMounted(()=>{
     
 })
 
-const correctAnswer = ref()
+
 
 
 
