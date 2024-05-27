@@ -129,7 +129,7 @@
                                     {{ question.author.name }}
                                 </th>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                
+                                    {{ formatDate(question.created_at) }}
                                 </th>
                             
                             
@@ -168,6 +168,7 @@
                     <div class="flex justify-end text-gray-100">
                         {{ user.role }}
                     </div>
+                    
                 </div>
             </div>
             <!--header-->
@@ -176,42 +177,69 @@
             <div class=" border-t-0 rounded-bl-md rounded-br-md p-2">
                 <div>
                     <span class="text-lg font-semibold"> Subject Code : </span>
-                    <span>{{ selectedSubjectCode.name }}</span> 
+                    <span>{{ selectedSubjectCode.name }} </span> 
                 </div>
-                <div>
-                    <span class="text-lg font-semibold"> Description : </span>
-                    <span>{{ selectedSubjectCode.description }}</span> 
-                </div>
-                <div class="w-full flex gap-2 ">
-                    <div class="w-[60%] bg-red-400">
-                        <textarea class="w-full h-full" cols="50" rows="10" :value="viewQuestionInfo.question">
-                        </textarea>
+                <div class="flex justify-between">
+                    <div>
+                        <span class="text-lg font-semibold"> Description : </span>
+                        <span>{{ selectedSubjectCode.description }}</span> 
                     </div>
+                    <div class="pr-4">
+                       <span class="text-lg font-semibold">Id:</span>  {{ selectedSubjectCode.id }}
+                    </div>
+                </div>
+
+                
+                <div class="w-full flex gap-2 border p-2">
+                     <!--Left box-->
+                    <div class="w-[60%]  ">
+                        <textarea class="w-full h-[50%] mb-2" cols="40" rows="5" :value="viewQuestionInfo.question">
+                        </textarea>
+                        <div class="flex justify-center flex-col items-center w-[160px] text-center border border-2 p-2 ">
+                            <img :src="logoUrl" alt="error" class=" max-h-[100px] max-w-[100px] mb-2 "/>
+                            <button class="border bg-gray-200 p-2 rounded-md" disabled>Attached Image</button>
+                        </div>
+                        
+                    </div>
+                    <!--Left box-->
                     {{ getCorrectAnswer(viewQuestionInfo.options) }} 
                     
+                    
+                    <!--right box-->
                     <div class="border w-[40%] p-2">
-                        <div class="flex items-center gap-2 mb-2" v-for="option in viewQuestionInfo.options" :key="option.id">
-                            
-                            <input type="radio" :name="`options`" :id="`option_${option.id}`" :value="option.id" v-model="correctAnswer" />
-                            <textarea cols="30" rows="2" class="w-full" :value="option.option">  </textarea>
+                        <!--text option-->
+                        <div v-if="textTab" >
+                            text>>>
+                            <div class="flex items-center gap-2 mb-2" v-for="option in viewQuestionInfo.options" :key="option.id">                    
+                                <input type="radio" :name="`options`" :id="`option_${option.id}`" :value="option.id" v-model="correctAnswer" />
+                                <textarea cols="30" rows="2" class="w-full" :value="option.option">  </textarea>
+                            </div>
                         </div>
-                        <!-- <div class="flex items-center gap-2 mb-2" >
-                            <input type="radio" :name="`option`" :id="`option_b`" v-model="viewQuestionInfo.options[0].isCorrect"/>
-                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[1].option"> </textarea>
+                        <!--text option-->
+
+                        <!--image option-->
+                        <div v-if="imageTab" >
+                            image>>>>
+                            <div class="flex items-center gap-2 mb-2" v-for="option in viewQuestionInfo.options" :key="option.id">                    
+                                <input type="radio" :name="`options`" :id="`option_${option.id}`" :value="option.id" v-model="correctAnswer" />
+                                <textarea cols="30" rows="2" class="w-full" :value="option.option">  </textarea>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2 mb-2"  >
-                            <input type="radio" :name="`option`" :id="`option_c`" v-model="viewQuestionInfo.options[0].isCorrect"/>
-                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[2].option"> </textarea>
+                        <!--image option-->
+                        <div>
+                            <button @click="handleTabMenu('text')"  class="bg-gray-100 p-2 rounded-l-md border-1 border-gray-300 shadow-sm hover:bg-gray-200" :class="{'bg-gray-200': textTab}">Text</button>
+                            <button @click="handleTabMenu('image')" class="bg-gray-100 p-2  rounded-r-md border-1 border-gray-300 shadow-sm hover:bg-gray-200" :class="{'bg-gray-200': imageTab}">Image</button>
                         </div>
-                        <div class="flex items-center gap-2 mb-2" >
-                            <input type="radio" :name="`option`" :id="`option_d`" v-model="viewQuestionInfo.options[0].isCorrect"/>
-                            <textarea cols="30" rows="2" class="w-full" :value="viewQuestionInfo.options[3].option"> </textarea>
-                        </div> -->
                     </div>
+                    
+                    
+                    <!--right box-->
                 </div>
             </div>
             <!--BODY-->
-            Question Info : {{ viewQuestionInfo.answer }}
+
+
+           
             <div class="flex flex-col align-items-center gap-3 mb-3">
                 <label for="username" class="font-semibold w-6rem"></label>
                 
@@ -284,6 +312,20 @@ const viewQuestionInfo = ref('');
 const showQuestionInfoModal = (question)=>{
     infoModalOpen.value = !infoModalOpen.value
     viewQuestionInfo.value = question
+
+    if(question.type === 'text')
+    {
+        
+        textTab.value = true;
+        imageTab.value = false;
+    }
+    
+    if(question.type === 'image')
+    {
+        imageTab.value = true
+        textTab.value = false
+    }
+    
 }
 
 watch(infoModalOpen,(val)=>{
@@ -387,4 +429,23 @@ function getDisplayedQuestions(){
     return hasFilteredTerm.value ? filteredQuestionByTerm.value : filteredQuestionByCode.value
 }
 
+const textTab = ref(true)
+const imageTab = ref(false)
+
+function handleTabMenu(tab)
+{
+    
+    if(tab === 'text')
+    {
+        
+        textTab.value = true;
+        imageTab.value = false;
+    }
+    
+    if(tab === 'image')
+    {
+        imageTab.value = true
+        textTab.value = false
+    }
+}
 </script>
