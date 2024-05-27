@@ -42,5 +42,7 @@ class SubjectCodeSeeder extends Seeder
             'department_id' => '2',
             'division_id'   => '1',
         ]);
+
+        
     }
 }

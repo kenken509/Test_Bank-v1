@@ -11,6 +11,7 @@ class QuestionSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+    
     public function run(): void
     {
         DB::table('questions')->insert([
@@ -38,6 +39,17 @@ class QuestionSeeder extends Seeder
             'question'          => 'What does CSS stand for?',
             'type'              => 'text',
             'term'              => 'mid-term',
+            
+            'subject_code_id'   => '1',
+            'author_id'         => '1',
+            'created_at'        => now(),
+        ]);
+
+        //question 4
+        DB::table('questions')->insert([
+            'question'          => 'Choose the image of a laptop.',
+            'type'              => 'image',
+            'term'              => 'final',
             
             'subject_code_id'   => '1',
             'author_id'         => '1',

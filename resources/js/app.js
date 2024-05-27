@@ -16,7 +16,7 @@ import Dialog from 'primevue/dialog';
 import Button from "primevue/button"
 import InputText from 'primevue/inputtext';
 import InputMask from 'primevue/inputmask';
-
+import Image from 'primevue/image';
 
 
 createInertiaApp({
@@ -34,6 +34,7 @@ createInertiaApp({
       .component('Button',Button)
       .component('InputText',InputText)
       .component('InputMask',InputMask)
+      .component('Image', Image)
       .mount(el)
   },
 })

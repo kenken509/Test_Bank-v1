@@ -89,5 +89,30 @@ class OptionSeeder extends Seeder
             'isCorrect' => 'false'
         ]);
 
+        //question 4
+        DB::table('options')->insert([
+            'option' => 'laptop.png',
+            'question_id' => '4',
+            'isCorrect' => 'true'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'desktop.png',
+            'question_id' => '4',
+            'isCorrect' => 'false'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'keyboard.png',
+            'question_id' => '4',
+            'isCorrect' => 'false'
+        ]);
+
+        DB::table('options')->insert([
+            'option' => 'monitor.png',
+            'question_id' => '4',
+            'isCorrect' => 'false'
+        ]);
+
     }
 }
