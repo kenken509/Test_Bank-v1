@@ -18,7 +18,7 @@ class QuestionSeeder extends Seeder
             'question'          => 'Who is known as the first woman programmer?',
             'type'              => 'text',
             'term'              => 'prelim',
-            
+            'attached_image'    => 'ada.jpeg',
             'subject_code_id'   => '1',
             'author_id'         => '1',
             'created_at'        => now(),

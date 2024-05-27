@@ -11,7 +11,9 @@
         </div>
         <!-- current codes:  {{ filteredQuestionByCode }} || hasFilteredTerm = {{ hasFilteredTerm }}
         <span class="text-red-700">{{ getDisplayedQuestions() }}</span> -->
-            
+        <div v-if="$page.props.flash.success" >{{ successMessage($page.props.flash.success) }} </div>
+        <div v-if="$page.props.flash.error" >{{ errorMessage($page.props.flash.error) }} </div>
+
             <div class="flex  flex-col ">
                 <div class="grid grid-cols-10 items-center my-2 ">
                     <div class="col-span-1">
@@ -199,17 +201,18 @@
                 
 
                 
-                <div class="w-full flex gap-2  ">
+                <div class="w-full flex gap-2 border border-gray-300 pl-2 py-2 rounded-md shadow-sm ">
                      <!--Left box-->
-                    <div class="w-[60%]  ">
+                    <div class="w-[60%] h-full ">
                         <textarea class="w-full h-[50%] mb-2" cols="40" rows="5" :value="viewQuestionInfo.question">
                         </textarea>
-                        <div class="flex max-h-[45%]  flex-col  ">
-                            <div class="border border-2 border-gray-300 flex flex-col items-center max-w-[150px] p-2">
-                                <img :src="logoUrl" alt="error" class=" max-h-[100px] max-w-[100px] mb-2 "/>
+                        <div class=" relative flex  max-h-[30%]  flex-col  ">
+                            <div class=" border border-2 border-gray-300 flex flex-col items-center max-w-[150px] p-2">
+                                <img :src="viewQuestionInfo.attached_image ? optionUrl+viewQuestionInfo.attached_image:optionUrl+'no_image.png' " alt="error" class=" rounded-md max-h-[100px] max-w-[100px] mb-2 "/>
                                 <span>
                                     Attached Image
                                 </span>
+                                <i v-if="!viewQuestionInfo.attached_image" class="pi pi-ban text-red-400 text-[30px] top-8 absolute z-50"></i>
                             </div>
                             
                         </div>
@@ -269,8 +272,8 @@
 <script setup>
 import DashboardLayout from '../DashboardLayout.vue';
 import {ref,watch,onMounted} from 'vue'
-import { Link,usePage } from '@inertiajs/vue3';
-
+import { Link,usePage,router } from '@inertiajs/vue3';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 function getCorrectAnswer(options)
 {
@@ -464,5 +467,69 @@ function handleTabMenu(tab)
 }
 
 
+// sweet alert logic
+
+const deleteConfirmation = (questionId)=> 
+    { 
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+            }).then((result) => {
+                if(result.isConfirmed)
+                {
+                    const deleteUrl = route('questions.delete',{id: questionId })
+
+                    router.delete(deleteUrl);
+                }
+
+                if(result.isDismissed)
+                {
+                    Swal.fire({
+                        title:'Canceled',
+                        text:'Your action was canceled!',
+                        icon:'error',
+                        confirmButtonColor: '#3085d6',
+                    })
+                }
+        });
+    }  
+
+    function successMessage(message)
+    {
+        Swal.fire({
+            title:'Success',
+            text:message,
+            icon:'success',
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        }).then((result)=>{
+            if(result.isConfirmed)
+            {
+                location.reload();
+            }
+        })
+    }
+    
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message + '!',
+            allowOutsideClick:false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        })
+    }
+
+    
 </script>
 

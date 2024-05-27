@@ -63,4 +63,6 @@ Route::controller(SubjectCodeController::class)->group(function(){
 
 Route::controller(QuestionController::class)->group(function(){
     Route::get('/test_bank/questions', 'showQuestions')->name('questions.show');
+    Route::delete('/test_bank/questions/delete/{id}', 'destroy')->name('questions.delete');
+    Route::get('/test_bank/questions/add', 'showAddQuestion')->name('question.add');
 });
