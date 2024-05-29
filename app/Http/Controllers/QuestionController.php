@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Option;
 use App\Models\Question;
 use App\Models\SubjectCode;
 use Illuminate\Http\Request;
@@ -99,7 +100,81 @@ class QuestionController extends Controller
 
     public function storeQuestion(Request $request)
     {
-        dd($request);
+        // const form = useForm({
+        //     question:'',
+        //     type:'text',
+        //     term: '',
+        //     attached_image:'',
+        //     term:'',
+        //     subject_code_id:'',
+        //     author_id:user.id,
+        //     options:[],
+        // })
+       dd('im here');
+        if($request->type == 'text')
+        {
+            // check if there is an attached image file, if yes then save the to images storage link and save the data to database else save the data to database, save each option
+            // to related options
+            //dd($request);
+
+            // $validatedData = $request->validate([
+            //     'question' => 'required|string|max:255',
+            //     'type' => 'required|string|in:text,image,other', // Adjust 'in' values according to your needs
+            //     'term' => 'required|string|max:255',
+            //     'attached_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //     'subject_code_id' => 'required|integer|exists:subject_codes,id', // Adjust to your table and field
+            //     'author_id' => 'required|integer|exists:users,id', // Assuming the author is a user
+            //     'options' => 'required|array',
+            //     'options.*.option' => 'required|string|max:255', // Validate each option text
+            //     'options.*.isCorrect' => 'required|in:true,false', // Validate each option correctness
+            // ]);
+
+            try{
+                DB::beginTransaction();
+
+                if ($request->hasFile('attached_image')) {
+                    $file = $request->file('attached_image');
+                    $path = $file->store('images', 'public');
+                    $imagePath = basename($path); // Get only the filename
+                } else {
+                    $imagePath = null;
+                }
+
+
+                $question = new Question();
+                $question->question         = $request->question;
+                $question->type             = $request->type;
+                $question->term             = $request->term;
+                $question->attached_image   = $imagePath;
+                $question->subject_code_id  = $request->subject_code_id;
+                $question->author_id        = $request->author_id;
+                $question->save();
+
+                //dd($request);
+                // Save each option related to the question
+                foreach ($request->options as $option) {
+                    
+                    $questionOption = new Option();
+                    $questionOption->option         = $option['option'];
+                    // Convert boolean to string 'true' or 'false'
+                    $questionOption->isCorrect = $option['isCorrect'] ? 'true' : 'false'; //$questionOption->isCorrect      = $option['isCorrect'];
+                    $questionOption->question_id    = $question->id;
+                    $questionOption->save();
+                }
+
+                DB::commit();
+                return redirect()->route('questions.show')->with('success', 'Successfully created new question.');
+            }catch (\Exception $e)
+            {
+                DB::rollback();
+                Log::error('error creating new question: '.$e->getMessage());
+
+                return redirect()->back()->with('error', 'Failed to create new question.');
+            }
+            
+        }
+
+        
     }
     public function destroy($id)
     {

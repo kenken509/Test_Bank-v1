@@ -241,6 +241,7 @@ const handleAttachedImageChange = (event) => {
 const attachedImageValidator = ref('');
 const textOptionsValidator = ref('');
 const imageOptionValidator = ref('');
+const noError = ref(false);
 
 function imageFileValidator(file,index){
     
@@ -438,6 +439,7 @@ const handleImageOptionFileChange_3 = (event) => {
 
 
 // form submission
+
 const submit = ()=>{
     // validate text options if form.type = 'text'
     if(form.type === 'text')
@@ -448,24 +450,33 @@ const submit = ()=>{
     
     if(form.type === 'image')
     {
+       
         if(imageOptionURL_0.value === '' || imageOptionURL_1.value === '' || imageOptionURL_2.value === '' || imageOptionURL_3.value === '')
         {
+            
             imageOptionValidator.value = 'Fill out all image options.'
-        }
-        
-        if(!selectedOption.value)
-        {
-            imageOptionValidator.value = "Please select correct answer."
+            noError.value = false
         }
         else
         {
-            
-            imageOptionValidator.value = ''
+            if(!selectedOption.value)
+            {
+                imageOptionValidator.value = "Please select correct answer."
+                noError.value = false
+            }
+            else
+            {
+                
+                imageOptionValidator.value = ''
+                noError.value = true
+            }
         }
+        
+        
 
-        if(!imageOptionValidator.value)
+        if(noError.value)
         {
-            form.options = options.value
+
             submitConfirmation();
         }
     }

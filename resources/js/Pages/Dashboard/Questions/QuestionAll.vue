@@ -2,12 +2,12 @@
     <DashboardLayout>
         <div class="flex items-center justify-between border-bot-only py-2 mb-4">
             <span class="text-[20px] font-bold text-gray-500">Questions Page </span> 
-            <div class="relative">
+            <!-- <div class="relative">
                 <input v-model="searchField" type="text" placeholder="search" class="rounded-md">
                 <svg class="absolute top-3 right-2 w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
                 </svg>
-            </div> 
+            </div>  -->
         </div>
         <!-- current codes:  {{ filteredQuestionByCode }} || hasFilteredTerm = {{ hasFilteredTerm }}
         <span class="text-red-700">{{ getDisplayedQuestions() }}</span> -->
@@ -139,7 +139,7 @@
                                     <div  class="flex flex-col   lg:flex-row lg:justify-center  lg:space-x-4">
                                         <button @click="showQuestionInfoModal(question)" class="btn-primary p-2">Info</button>
                                         <button  @click="deleteConfirmation(question.id)" class=" btn-warning my-2">Delete </button>
-                                        <Link :href="route('subject.codes.update.show',{id:question.id})" type="button" class="btn-success my-2">
+                                        <Link href="" type="button" class="btn-success my-2">
                                             Update
                                         </Link>
                                     </div>
@@ -194,7 +194,7 @@
                         <span class="text-lg font-semibold">Type: </span>  {{ viewQuestionInfo.type }}
                         </div>
                         <div class="pr-4">
-                        <span class="text-lg font-semibold">Id:</span>  {{ selectedSubjectCode.id }}
+                        <span class="text-lg font-semibold">Id:</span>  {{ viewQuestionInfo.id }}
                         </div>
                     </div>
                 </div>
