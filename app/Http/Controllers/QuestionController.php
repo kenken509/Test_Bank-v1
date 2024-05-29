@@ -97,6 +97,10 @@ class QuestionController extends Controller
         ]);
     }
 
+    public function storeQuestion(Request $request)
+    {
+        dd($request);
+    }
     public function destroy($id)
     {
         $questionToDelete = Question::findOrFail($id);

@@ -390,6 +390,8 @@ const myArray = [
         term: 'final',
     }
 ]
+
+
 // Watcher for each checkbox
 watch(prelim, updateFilteredArray);
 watch(midTerm, updateFilteredArray);

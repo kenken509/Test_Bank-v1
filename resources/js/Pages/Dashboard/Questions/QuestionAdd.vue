@@ -2,22 +2,32 @@
     <DashboardLayout>
         <div class="flex items-center justify-between border-bot-only py-4 mb-6">
             <span class="text-[20px] font-bold text-gray-500 ">New Question Page </span> 
-        </div>{{ options }}
+        </div>
         <form @submit.prevent="submit">    
-            <div class="" >  
+            <div class="" > 
+                <div class=" flex w-full mb-4 flex-col lg:flex-row "> 
+                    <div class="flex items-center w-[150px] ">
+                        <span class="font-semibold text-lg py-2 " >Term : </span>
+                    </div>
+                    <select v-model="form.term" class="rounded-md border-gray-400 shadow-md hover:cursor-pointer " required>
+                        <option value="" hidden>Select term</option>
+                        <option v-for="(term,index) in terms" :key="index" >
+                            <span>{{ term }}</span>
+                        </option>
+                    </select>
+                </div> 
                 <div  class=" flex w-full mb-4 flex-col lg:flex-row ">
                     <div class="flex items-center w-[150px] ">
                         <span class="font-semibold text-lg py-2 " >Subject Code : </span>
                     </div>
                     
-                    <select v-model="selectedSubjectCode" id="subjectCodeSelect" class="rounded-md border-gray-400 shadow-md hover:cursor-pointer ">
+                    <select v-model="selectedSubjectCode" id="subjectCodeSelect" class="rounded-md border-gray-400 shadow-md hover:cursor-pointer " required>
                         <option value="" hidden>Select subject code</option>
                         <option v-for="code in data.subjectCodes" :key="code.id" :value="code">
                             {{ code.name }}
                         </option>
                     </select>
                 </div>
-                
                 
                 <div class=" flex flex-col lg:flex-row w-full mb-4">
                     <div class="flex items-center w-[150px] ">
@@ -33,7 +43,7 @@
                     <!--left container-->
                     <div class="w-full lg:w-[60%] border flex flex-col border-gray-900 p-2 rounded-md shadow-md">
                         <div>
-                            <textarea v-model="form.question" cols="50" rows="5" class="w-full rounded-md" placeholder="Type your question here."></textarea>
+                            <textarea v-model="form.question" cols="50" rows="5" class="w-full rounded-md" placeholder="Type your question here." required></textarea>
                         </div>
                         <div class="flex justify-center items-center lg:justify-start  mt-auto mb-2">
                             <div class="flex flex-col w-[160px] justify-center items-center gap-2"> 
@@ -51,7 +61,7 @@
                     <div class="w-full lg:w-[40%] border flex flex-col rounded-md border-gray-900 px-2 shadow-md">
                         <div class="flex flex-col flex-grow " >
                             <div v-if="textTab" class=" flex-grow border-b-2 border-gray-300 rounded-b-md shadow-sm p-2 ">
-                                <div v-for="(option,index) in options" :key="index" class="flex items-center gap-2 py-2 ">
+                                <div v-for="(option,index) in options" :key="index" class="flex items-center gap-2 py-2 " >
                                     <input 
                                     type="radio" 
                                     :id="`option_${index+1}`" 
@@ -59,24 +69,25 @@
                                     :value="index"
                                     v-model="selectedOption"
                                     @change="markCorrectOption(index)"
+                                    :required="textTab"
                                     />
-                                    <textarea v-model="options[index].option" cols="10" rows="2" class="w-full" ></textarea>
+                                    <textarea v-model="options[index].option" cols="10" rows="2" class="w-full" :required="textTab"></textarea>
                                 </div>
                             </div>
                             <div v-if="imageTab" class=" flex-grow border-b-2 border-gray-300 rounded-b-md shadow-sm p-2">
                                 <div class="grid grid-cols-2 p-2">
                                     <div  class="col-span-2 lg:col-span-1 flex items-center justify-center   py-2 gap-2 ">
-                                        <input v-model="selectedOption" type="radio"  id="image_opton_a" name="image_options" value="" />
+                                        <input v-model="selectedOption" type="radio"  id="image_opton_0" name="image_options" value="0" @change="markCorrectOption(0)"  />
                                         <div class="flex flex-col ml-2">
-                                            <input @change="handleImageOptionFileChange_0"  type="file" hidden ref="imageOption_0" accept=".jpg, .jpeg" />                               
-                                            <img :src="imageOptionURL_0 || imageUrl+'no_image.png'" alt="Image option" class="border border-gray-400 rounded-md shadow-md max-w-[122px] max-h-[122px]"/>
+                                            <input  @change="handleImageOptionFileChange_0"  type="file" hidden ref="imageOption_0" accept=".jpg, .jpeg" />                               
+                                            <img  :src="imageOptionURL_0 || imageUrl+'no_image.png'" alt="Image option" class="border border-gray-400 rounded-md shadow-md max-w-[122px] max-h-[122px]"/>
                                             <button @click="triggerImageOptionsFileInput(0)" type="button" class="bg-gray-200 hover:bg-gray-300 p-2 mt-2 border border-gray-800 rounded-md">Add Image</button>
                                             
                                         </div>
                                     </div>   
                                     
                                     <div  class="col-span-2 lg:col-span-1 flex items-center justify-center   py-2 gap-2 ">
-                                        <input v-model="selectedOption" type="radio"  id="image_opton_a" name="image_options" value="" accept=".jpg, .jpeg" />
+                                        <input v-model="selectedOption" type="radio"  id="image_opton_1" name="image_options" value="1" accept=".jpg, .jpeg" @change="markCorrectOption(1)"/>
                                         <div class="flex flex-col ml-2">
                                             <input @change="handleImageOptionFileChange_1" type="file" hidden ref="imageOption_1"   />                               
                                             <img :src="imageOptionURL_1 || imageUrl+'no_image.png'" alt="Image option" class="border border-gray-400 rounded-md shadow-md max-w-[122px] max-h-[122px]"/>
@@ -85,7 +96,7 @@
                                     </div> 
 
                                     <div  class="col-span-2 lg:col-span-1 flex items-center justify-center   py-2 gap-2 ">
-                                        <input v-model="selectedOption" type="radio"  id="image_opton_a" name="image_options" value=""  accept=".jpg, .jpeg"/>
+                                        <input v-model="selectedOption" type="radio"  id="image_opton_2" name="image_options" value="2"  accept=".jpg, .jpeg" @change="markCorrectOption(2)" />
                                         <div class="flex flex-col ml-2">
                                             <input @change="handleImageOptionFileChange_2" type="file" hidden ref="imageOption_2"   />                               
                                             <img :src="imageOptionURL_2 || imageUrl+'no_image.png'" alt="Image option" class="border border-gray-400 rounded-md shadow-md max-w-[122px] max-h-[122px]"/>
@@ -94,10 +105,10 @@
                                     </div> 
 
                                     <div  class="col-span-2 lg:col-span-1 flex items-center justify-center   py-2 gap-2 ">
-                                        <input v-model="selectedOption" type="radio"  id="image_opton_a" name="image_options" value="" accept=".jpg, .jpeg"/>
+                                        <input v-model="selectedOption" type="radio"  id="image_opton_3" name="image_options" value="3" accept=".jpg, .jpeg"  @change="markCorrectOption(3)"/>
                                         <div class="flex flex-col ml-2">
                                             <input @change="handleImageOptionFileChange_3" type="file" hidden ref="imageOption_3"   />                               
-                                            <img :src="imageOptionURL_3 || imageUrl+'no_image.png'" alt="Image option" class="border border-gray-400 rounded-md shadow-md max-w-[122px] max-h-[122px]"/>
+                                            <img :src="imageOptionURL_3 || imageUrl+'no_image.png'" alt="Image option" class="border border-gray-400 rounded-md shadow-md max-w-[122px] max-h-[122px]" />
                                             <button @click="triggerImageOptionsFileInput(3)" type="button" class="bg-gray-200 hover:bg-gray-300 p-2 mt-2 border border-gray-800 rounded-md">Add Image</button>
                                         </div>
                                     </div> 
@@ -129,12 +140,14 @@
 import DashboardLayout from '../DashboardLayout.vue';
 import {ref, watch, onMounted} from 'vue'
 import { useForm,usePage } from '@inertiajs/vue3';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 
 const user = usePage().props.user
 const form = useForm({
     question:'',
     type:'text',
+    term: '',
     attached_image:'',
     term:'',
     subject_code_id:'',
@@ -228,6 +241,7 @@ const handleAttachedImageChange = (event) => {
 const attachedImageValidator = ref('');
 const textOptionsValidator = ref('');
 const imageOptionValidator = ref('');
+
 function imageFileValidator(file,index){
     
     if(file)
@@ -309,6 +323,13 @@ const options = ref([
     }
 ])
 
+const terms = ([
+    'prelim',
+    'mid-term',
+    'pre-final',
+    'final',
+])
+
 function clearOptions(){
     const temp = ref([])
 
@@ -316,6 +337,7 @@ function clearOptions(){
         option.option = ''
         option.isCorrect = 'false'
     })
+    selectedOption.value = ''
 }
 
 function clearImageUrls()
@@ -372,6 +394,7 @@ const handleImageOptionFileChange_0 = (event) => {
     if(file)
     {
         imageFileValidator(file,0);
+        options.value[0].option = file
     }
    
 }
@@ -382,6 +405,7 @@ const handleImageOptionFileChange_1 = (event) => {
     if(file)
     {
         imageFileValidator(file,1);
+        options.value[1].option = file
     }
    
 }
@@ -392,6 +416,7 @@ const handleImageOptionFileChange_2 = (event) => {
     if(file)
     {
         imageFileValidator(file,2);
+        options.value[2].option = file
     }
    
 }
@@ -402,6 +427,7 @@ const handleImageOptionFileChange_3 = (event) => {
     if(file)
     {
         imageFileValidator(file,3);
+        options.value[3].option = file
     }
    
 }
@@ -414,10 +440,98 @@ const handleImageOptionFileChange_3 = (event) => {
 // form submission
 const submit = ()=>{
     // validate text options if form.type = 'text'
-    alert(form.type)
+    if(form.type === 'text')
+    {
+        form.options = options
+        submitConfirmation()
+    }
+    
+    if(form.type === 'image')
+    {
+        if(imageOptionURL_0.value === '' || imageOptionURL_1.value === '' || imageOptionURL_2.value === '' || imageOptionURL_3.value === '')
+        {
+            imageOptionValidator.value = 'Fill out all image options.'
+        }
+        
+        if(!selectedOption.value)
+        {
+            imageOptionValidator.value = "Please select correct answer."
+        }
+        else
+        {
+            
+            imageOptionValidator.value = ''
+        }
+
+        if(!imageOptionValidator.value)
+        {
+            form.options = options.value
+            submitConfirmation();
+        }
+    }
 }
 
 
+// sweet alert logic
+
+const submitConfirmation = ()=> 
+    { 
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Save new question confirmation",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, save it!",
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+            }).then((result) => {
+                if(result.isConfirmed)
+                {
+                    form.post(route('question.store'))
+                }
+
+                if(result.isDismissed)
+                {
+                    Swal.fire({
+                        title:'Canceled',
+                        text:'Your action was canceled!',
+                        icon:'error',
+                        confirmButtonColor: '#3085d6',
+                    })
+                }
+        });
+    }  
+
+    function successMessage(message)
+    {
+        Swal.fire({
+            title:'Success',
+            text:message,
+            icon:'success',
+            allowOutsideClick:false,
+            allowEscapeKey:false,
+        }).then((result)=>{
+            if(result.isConfirmed)
+            {
+                location.reload();
+            }
+        })
+    }
+    
+    function errorMessage(message) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message + '!',
+            allowOutsideClick:false,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        })
+    }
 
 
 
